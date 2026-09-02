@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#090d16" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255, 255, 255, 0.08)" />
+      <stop offset="100%" stop-color="rgba(255, 255, 255, 0.02)" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+
+  <!-- Ambient Glows -->
+  <circle cx="200" cy="150" r="220" fill="#4f46e5" opacity="0.25" filter="blur(80px)" />
+  <circle cx="1000" cy="480" r="260" fill="#a855f7" opacity="0.2" filter="blur(90px)" />
+
+  <!-- Main Card Container -->
+  <rect x="80" y="70" width="1040" height="490" rx="28" fill="url(#cardGrad)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5" />
+
+  <!-- App Logo / Icon -->
+  <g transform="translate(140, 130)">
+    <rect width="72" height="72" rx="18" fill="url(#accentGrad)" />
+    <!-- PDF Document Icon -->
+    <path d="M26 18H40L50 28V54H26V18Z" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M40 18V28H50" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M32 38H44" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M32 46H40" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+  </g>
+
+  <!-- Brand Name -->
+  <text x="232" y="178" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="900" fill="#ffffff" letter-spacing="-0.5">PDFMarts</text>
+  <rect x="440" y="148" width="94" height="32" rx="16" fill="rgba(99, 102, 241, 0.25)" stroke="#6366f1" stroke-width="1" />
+  <text x="487" y="169" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#818cf8" text-anchor="middle">FREE &amp; FAST</text>
+
+  <!-- Tagline Headline -->
+  <text x="140" y="270" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="46" font-weight="800" fill="#ffffff" letter-spacing="-0.5">
+    Every PDF Tool You Need.
+  </text>
+  <text x="140" y="324" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="46" font-weight="800" fill="url(#accentGrad)" letter-spacing="-0.5">
+    100% Client-Side Privacy.
+  </text>
+
+  <!-- Description -->
+  <text x="140" y="385" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="400" fill="#94a3b8">
+    Merge, Compress, Split, Convert (Word, Excel, PPT, JPG), Edit, and Sign PDFs in your browser.
+  </text>
+
+  <!-- Badges / Highlights -->
+  <g transform="translate(140, 440)">
+    <!-- Badge 1 -->
+    <rect x="0" y="0" width="220" height="48" rx="12" fill="rgba(16, 185, 129, 0.12)" stroke="#10b981" stroke-width="1" />
+    <text x="110" y="30" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#34d399" text-anchor="middle">🔒 Zero Cloud Uploads</text>
+
+    <!-- Badge 2 -->
+    <rect x="240" y="0" width="200" height="48" rx="12" fill="rgba(99, 102, 241, 0.12)" stroke="#6366f1" stroke-width="1" />
+    <text x="340" y="30" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#818cf8" text-anchor="middle">⚡ Instant Processing</text>
+
+    <!-- Badge 3 -->
+    <rect x="460" y="0" width="190" height="48" rx="12" fill="rgba(244, 63, 94, 0.12)" stroke="#f43f5e" stroke-width="1" />
+    <text x="555" y="30" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#fb7185" text-anchor="middle">✨ 25+ PDF Tools</text>
+
+    <!-- Badge 4 -->
+    <rect x="670" y="0" width="210" height="48" rx="12" fill="rgba(234, 179, 8, 0.12)" stroke="#eab308" stroke-width="1" />
+    <text x="775" y="30" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#facc15" text-anchor="middle">🚀 No Account Needed</text>
+  </g>
+</svg>

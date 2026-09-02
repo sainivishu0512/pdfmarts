@@ -1,0 +1,33 @@
+# robots.txt for PDFMarts (https://pdfmarts.com)
+# Allow all standard web crawlers and social media bots
+
+User-agent: *
+Allow: /
+
+# Fast crawling for major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Sitemap Location
+Sitemap: https://pdfmarts.com/sitemap.xml
