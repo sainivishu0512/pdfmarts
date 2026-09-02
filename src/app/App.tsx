@@ -270,16 +270,13 @@ function AdSenseUnit({
 
   return (
     <div className={cn("w-full overflow-hidden my-6 text-center", className)}>
-      <div className="text-[10px] font-semibold tracking-wider text-muted-foreground/50 uppercase mb-1.5">
-        Sponsored / Advertisement
-      </div>
-      <div className="min-h-[90px] w-full bg-muted/20 border border-dashed border-border/80 rounded-2xl flex items-center justify-center p-3">
+      <div className="min-h-[90px] w-full flex items-center justify-center">
         <ins
           ref={adRef}
           className="adsbygoogle"
           style={{ display: "block", minHeight: "90px", width: "100%" }}
-          data-ad-client="ca-pub-0000000000000000"
-          data-ad-slot={slotId || "0000000000"}
+          data-ad-client="ca-pub-2050955694853570"
+          data-ad-slot={slotId || ""}
           data-ad-format={format}
           data-full-width-responsive={responsive ? "true" : "false"}
         />
