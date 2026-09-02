@@ -25,6 +25,7 @@ import * as XLSX from "xlsx";
 import JSZip from "jszip";
 import { Document, Paragraph, TextRun, Packer, HeadingLevel } from "docx";
 import { SEOHead } from "./components/SEOHead";
+import { AdBanner } from "./components/AdBanner";
 import { TOOLS_SEO } from "./data/seoData";
 import { Language, SUPPORTED_LANGUAGES, TRANSLATIONS, getLocalizedTool } from "./data/i18n";
 
@@ -2934,6 +2935,9 @@ export default function App() {
             {renderPage(route, toolId)}
           </AnimatePresence>
         </main>
+        <div className="container mx-auto px-4 max-w-5xl">
+          <AdBanner />
+        </div>
         <Footer />
       </div>
     </RouterContext.Provider>
