@@ -21,8 +21,8 @@ export interface PageSEOInfo {
 
 export const SITE_CONFIG = {
   name: "PDFMarts",
-  domain: "pdfmarts.com",
-  baseUrl: "https://pdfmarts.com",
+  domain: "pdfmarts.vercel.app",
+  baseUrl: "https://pdfmarts.vercel.app",
   defaultTitle: "PDFMarts - Free Online PDF Tools, Converter & Editor",
   defaultDescription: "Merge, split, compress, convert, edit, OCR, watermark, and sign PDFs directly in your browser. 100% free, private client-side processing with zero file size limits.",
   defaultKeywords: [
@@ -40,7 +40,7 @@ export const SITE_CONFIG = {
     "client-side pdf tools",
     "offline pdf converter",
   ],
-  ogImage: "https://pdfmarts.com/og-image.svg",
+  ogImage: "https://pdfmarts.vercel.app/og-image.svg",
   themeColor: "#4f46e5",
   twitterHandle: "@pdfmarts",
 };

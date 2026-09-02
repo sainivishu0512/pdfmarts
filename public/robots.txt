@@ -1,4 +1,4 @@
-# robots.txt for PDFMarts (https://pdfmarts.com)
+# robots.txt for PDFMarts (https://pdfmarts.vercel.app)
 # Allow all standard web crawlers and social media bots
 
 User-agent: *
@@ -30,4 +30,4 @@ User-agent: facebookexternalhit
 Allow: /
 
 # Sitemap Location
-Sitemap: https://pdfmarts.com/sitemap.xml
+Sitemap: https://pdfmarts.vercel.app/sitemap.xml
