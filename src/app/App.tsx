@@ -454,7 +454,7 @@ function ShareAndQRModal({
   isOpen,
   onClose,
   title = "PDFMarts - Free Online PDF Tools",
-  url = "https://pdfmarts.vercel.app",
+  url = "https://pdfmarts.com",
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -554,7 +554,7 @@ function ShareAndQRModal({
 
 function BookmarkletSection() {
   const { t } = useRouter();
-  const bookmarkletCode = `javascript:(function(){window.open('https://pdfmarts.vercel.app/convert-to-pdf?url='+encodeURIComponent(location.href));})();`;
+  const bookmarkletCode = `javascript:(function(){window.open('https://pdfmarts.com/convert-to-pdf?url='+encodeURIComponent(location.href));})();`;
 
   return (
     <section className="py-12 px-4">
@@ -1776,7 +1776,7 @@ async function processFilesForTool(
   if (tool.id === "pdf-to-txt" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
     const arrayBuffer = await primaryFile.arrayBuffer();
     const pdfDoc = await loadPdfJsDoc(arrayBuffer);
-    let fullText = `=== Extracted Text: ${baseName}.pdf ===\nGenerated via PDFMarts (https://pdfmarts.vercel.app)\n\n`;
+    let fullText = `=== Extracted Text: ${baseName}.pdf ===\nGenerated via PDFMarts (https://pdfmarts.com)\n\n`;
 
     for (let i = 1; i <= pdfDoc.numPages; i++) {
       const page = await pdfDoc.getPage(i);
@@ -1801,7 +1801,7 @@ async function processFilesForTool(
       pdfDoc.setAuthor("");
       pdfDoc.setSubject("");
       pdfDoc.setKeywords([]);
-      pdfDoc.setProducer("PDFMarts Privacy Sanitizer (https://pdfmarts.vercel.app)");
+      pdfDoc.setProducer("PDFMarts Privacy Sanitizer (https://pdfmarts.com)");
       pdfDoc.setCreator("PDFMarts Client Engine");
     } else {
       if (options.title !== undefined) pdfDoc.setTitle(options.title);
