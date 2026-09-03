@@ -1,33 +1,50 @@
 # robots.txt for PDFMarts (https://pdfmarts.com)
-# Allow all standard web crawlers and social media bots
+# Allow all web crawlers, AI search agents, and social media bots
 
 User-agent: *
 Allow: /
 
-# Fast crawling for major search engines
+# Major Search Engine Bots
 User-agent: Googlebot
-Allow: /
-
+User-agent: Googlebot-Image
+User-agent: Googlebot-Mobile
 User-agent: Bingbot
-Allow: /
-
+User-agent: msnbot
 User-agent: DuckDuckBot
-Allow: /
-
 User-agent: Baiduspider
-Allow: /
-
 User-agent: YandexBot
-Allow: /
-
 User-agent: Applebot
+User-agent: SeznamBot
+User-agent: Qwantify
 Allow: /
 
+# AI Search & LLM Discovery Crawlers
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+User-agent: Google-Extended
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Bytespider
+User-agent: Amazonbot
+User-agent: Cohere-ai
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Social Media Link Preview Bots
 User-agent: Twitterbot
-Allow: /
-
 User-agent: facebookexternalhit
+User-agent: Facebot
+User-agent: LinkedInBot
+User-agent: Pinterestbot
+User-agent: Slackbot
+User-agent: TelegramBot
+User-agent: WhatsApp
+User-agent: Discordbot
 Allow: /
 
-# Sitemap Location
+# Sitemaps & Host Directives
 Sitemap: https://pdfmarts.com/sitemap.xml
+Host: https://pdfmarts.com
+
