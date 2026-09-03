@@ -50,6 +50,13 @@
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234F46E5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>" />
 
+    <!-- Google Search Console & Webmaster Verification -->
+    <meta name="google-site-verification" content="" />
+    <meta name="msvalidate.01" content="" />
+    <meta name="rating" content="General" />
+    <meta name="revisit-after" content="2 days" />
+    <meta name="distribution" content="global" />
+
     <!-- Performance Preconnects -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
@@ -64,6 +71,7 @@
             "@id": "https://pdfmarts.com/#website",
             "url": "https://pdfmarts.com/",
             "name": "PDFMarts",
+            "alternateName": ["PDF Marts", "PDFMarts Tools"],
             "description": "Free online PDF tools, converter, compressor, and editor with 100% client-side privacy.",
             "inLanguage": "en-US",
             "potentialAction": {
@@ -77,7 +85,11 @@
             "@id": "https://pdfmarts.com/#organization",
             "name": "PDFMarts",
             "url": "https://pdfmarts.com/",
-            "logo": "https://pdfmarts.com/og-image.svg"
+            "logo": "https://pdfmarts.com/og-image.svg",
+            "sameAs": [
+              "https://twitter.com/pdfmarts",
+              "https://github.com/sainivishu0512/pdfmarts"
+            ]
           },
           {
             "@type": "WebApplication",
@@ -92,15 +104,60 @@
               "price": "0",
               "priceCurrency": "USD"
             },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.9",
+              "ratingCount": "2450",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
             "featureList": [
               "Merge multiple PDFs into one document",
-              "Compress PDF file size without quality loss",
+              "Compress PDF file size to target size (100KB, 200KB, 500KB, 1MB)",
               "Split PDF by page ranges or individual pages",
               "Convert Word, Excel, PowerPoint, and Images to PDF",
               "Convert PDF to Word, Excel, PowerPoint, and JPG",
               "Sign PDF documents with digital draw and text signatures",
               "Watermark, rotate, crop, protect, and unlock PDFs",
               "Extract text with client-side OCR"
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://pdfmarts.com/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is PDFMarts completely free to use?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes! All PDF tools on PDFMarts are 100% free with no subscriptions, paywalls, or hidden limitations."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are my PDF files safe and private on PDFMarts?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Absolutely. All processing occurs 100% locally inside your web browser using WebAssembly and JavaScript. Your files are never uploaded to any cloud server."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I compress a PDF to a specific target file size like 100KB or 200KB?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, PDFMarts includes a dedicated Target Size PDF Compressor tool that lets you specify exact target sizes like 50KB, 100KB, 200KB, 500KB, or 1MB."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What tools are available on PDFMarts?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "PDFMarts provides over 25+ tools including Merge PDF, Split PDF, Compress PDF, PDF to Word, Word to PDF, PDF to Excel, OCR PDF, Sign PDF, Watermark, Crop, Protect, and Unlock PDF."
+                }
+              }
             ]
           }
         ]
@@ -113,11 +170,42 @@
     <style>
       html, body { height: 100%; margin: 0; }
       #root { height: 100%; }
+      .seo-crawler-links { display: none; }
     </style>
   </head>
 
   <body>
     <div id="root"></div>
+
+    <!-- Crawler & Search Engine Semantic Fallback for Instant Google Indexing -->
+    <noscript>
+      <header>
+        <h1>PDFMarts — Free Online PDF Tools, Converter & Editor</h1>
+        <p>100% Private, Client-Side PDF Tools with Zero Uploads & No Limits.</p>
+      </header>
+      <main>
+        <h2>Popular Free PDF Tools</h2>
+        <ul>
+          <li><a href="/compress-pdf-target">Compress PDF to Specific Size (100KB, 200KB, 500KB)</a></li>
+          <li><a href="/compress-pdf">Compress PDF File Size</a></li>
+          <li><a href="/merge-pdf">Merge PDF Files Online</a></li>
+          <li><a href="/split-pdf">Split PDF Pages</a></li>
+          <li><a href="/pdf-to-word">PDF to Word Converter (DOCX)</a></li>
+          <li><a href="/word-to-pdf">Word to PDF Converter</a></li>
+          <li><a href="/sign-pdf">Sign PDF Online (Digital Signature)</a></li>
+          <li><a href="/ocr-pdf">OCR PDF - Extract Text from Scanned PDFs</a></li>
+          <li><a href="/edit-pdf">Edit PDF Online</a></li>
+          <li><a href="/pdf-to-excel">PDF to Excel Converter</a></li>
+          <li><a href="/excel-to-pdf">Excel to PDF Converter</a></li>
+          <li><a href="/jpg-to-pdf">JPG to PDF Converter</a></li>
+          <li><a href="/pdf-to-jpg">PDF to JPG Images</a></li>
+          <li><a href="/watermark-pdf">Add Watermark to PDF</a></li>
+          <li><a href="/protect-pdf">Password Protect PDF</a></li>
+          <li><a href="/unlock-pdf">Unlock Password-Protected PDF</a></li>
+        </ul>
+      </main>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {

@@ -326,7 +326,10 @@ function UploadZone({
         className="hidden"
         accept={accepts}
         multiple={multiple}
-        onChange={(e) => processFiles(e.target.files)}
+        onChange={(e) => {
+          processFiles(e.target.files);
+          e.target.value = "";
+        }}
         aria-hidden
       />
       <div className={cn(
@@ -1527,6 +1530,77 @@ function ToolSettings({ toolId, options, setOptions }: { toolId: string; options
           <p className="text-xs text-muted-foreground">Supports iPhone HEIC, WebP, SVG, JPG, PNG, and GIF.</p>
         </div>
       );
+    case "edit-pdf":
+      return (
+        <div className="p-4 bg-card rounded-xl border border-border space-y-3">
+          <h4 className="font-semibold text-sm">Annotation & Edit Settings</h4>
+          <div>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Annotation / Stamp Text</label>
+            <input
+              type="text"
+              value={options.annotationText || "APPROVED · PDFMarts"}
+              onChange={e => setOptions({ ...options, annotationText: e.target.value })}
+              placeholder="e.g. APPROVED or REVIEWED"
+              className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-muted/30 focus:outline-none focus:ring-2 focus:ring-primary/30"
+            />
+          </div>
+        </div>
+      );
+    case "delete-pages":
+      return (
+        <div className="p-4 bg-card rounded-xl border border-border space-y-3">
+          <h4 className="font-semibold text-sm">Delete Page Settings</h4>
+          <div>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Page Number to Remove</label>
+            <input
+              type="number"
+              min="1"
+              value={options.pageToDelete || "1"}
+              onChange={e => setOptions({ ...options, pageToDelete: e.target.value })}
+              placeholder="e.g. 1"
+              className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-muted/30 focus:outline-none focus:ring-2 focus:ring-primary/30"
+            />
+          </div>
+        </div>
+      );
+    case "extract-pages":
+      return (
+        <div className="p-4 bg-card rounded-xl border border-border space-y-3">
+          <h4 className="font-semibold text-sm">Extract Page Settings</h4>
+          <div>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Page Number to Extract</label>
+            <input
+              type="number"
+              min="1"
+              value={options.pageToExtract || "1"}
+              onChange={e => setOptions({ ...options, pageToExtract: e.target.value })}
+              placeholder="e.g. 1"
+              className="w-full px-3 py-2 text-sm rounded-lg border border-border bg-muted/30 focus:outline-none focus:ring-2 focus:ring-primary/30"
+            />
+          </div>
+        </div>
+      );
+    case "organize-pdf":
+      return (
+        <div className="p-4 bg-card rounded-xl border border-border space-y-3">
+          <h4 className="font-semibold text-sm">Page Order</h4>
+          <div className="grid grid-cols-2 gap-2">
+            {[["Normal Order", "false"], ["Reverse Order", "true"]].map(([label, val]) => (
+              <button
+                key={val}
+                type="button"
+                onClick={() => setOptions({ ...options, reverse: val })}
+                className={cn(
+                  "py-2 px-3 text-xs font-semibold rounded-lg border transition-colors",
+                  (options.reverse || "false") === val ? "bg-primary text-primary-foreground border-primary" : "border-border bg-muted/30 hover:bg-muted"
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
     default:
       return null;
   }
@@ -1594,17 +1668,24 @@ function ToolPage({ toolId }: { toolId: string }) {
   };
 
 async function loadPdfJsDoc(arrayBuffer: ArrayBuffer) {
-  if (typeof window !== "undefined" && !pdfjsLib.GlobalWorkerOptions.workerSrc) {
-    try {
+  const data = new Uint8Array(arrayBuffer.slice(0));
+  try {
+    if (typeof window !== "undefined" && !pdfjsLib.GlobalWorkerOptions.workerSrc) {
       pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-    } catch {
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version || "3.11.174"}/pdf.worker.min.js`;
     }
+    const loadingTask = pdfjsLib.getDocument({
+      data,
+      cMapUrl: "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/",
+      cMapPacked: true,
+    });
+    return await loadingTask.promise;
+  } catch (err) {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
+    const fallbackTask = pdfjsLib.getDocument({
+      data: new Uint8Array(arrayBuffer.slice(0)),
+    });
+    return await fallbackTask.promise;
   }
-  const loadingTask = pdfjsLib.getDocument({
-    data: new Uint8Array(arrayBuffer),
-  });
-  return await loadingTask.promise;
 }
 
 async function renderPageToCanvas(pdfDoc: any, pageNum: number): Promise<HTMLCanvasElement> {
@@ -2195,8 +2276,15 @@ async function processFilesForTool(
 
     let targetIndices: number[] = [];
     if (tool.id === "delete-pages") {
-      targetIndices = Array.from({ length: Math.max(1, totalPages - 1) }, (_, i) => i);
+      const delPage = parseInt(options.pageToDelete || "1", 10) - 1;
+      targetIndices = Array.from({ length: totalPages }, (_, i) => i).filter(i => i !== delPage);
+      if (targetIndices.length === 0) targetIndices = [0];
+    } else if (tool.id === "extract-pages") {
+      const extractTarget = parseInt(options.pageToExtract || "1", 10) - 1;
+      const validIndex = extractTarget >= 0 && extractTarget < totalPages ? extractTarget : 0;
+      targetIndices = [validIndex];
     } else {
+      // Split PDF: keeps first half by default or specified range
       const countToKeep = Math.max(1, Math.ceil(totalPages / 2));
       targetIndices = Array.from({ length: countToKeep }, (_, i) => i);
     }
@@ -2259,18 +2347,91 @@ async function processFilesForTool(
     };
   }
 
-  // ─── 13. COMPRESS PDF ───────────────────────────────────────────────────────
+  // ─── 13. COMPRESS PDF (Multi-pass browser compression) ──────────────────────
   if (tool.id === "compress-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+    try {
+      const arrayBuffer = await primaryFile.arrayBuffer();
+      const pdfDoc = await loadPdfJsDoc(arrayBuffer);
+      const numPages = pdfDoc.numPages;
+      const newPdf = new jsPDF({ unit: "pt", format: "a4" });
+      const compLevel = options.compression || "recommended";
+      const quality = compLevel === "extreme" ? 0.4 : compLevel === "less" ? 0.85 : 0.65;
+      const scale = compLevel === "extreme" ? 1.0 : compLevel === "less" ? 1.6 : 1.3;
+
+      for (let i = 1; i <= numPages; i++) {
+        if (i > 1) newPdf.addPage();
+        const page = await pdfDoc.getPage(i);
+        const viewport = page.getViewport({ scale });
+        const canvas = document.createElement("canvas");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        const ctx = canvas.getContext("2d")!;
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        await page.render({ canvasContext: ctx, viewport }).promise;
+
+        const imgData = canvas.toDataURL("image/jpeg", quality);
+        const pdfW = newPdf.internal.pageSize.getWidth();
+        const pdfH = newPdf.internal.pageSize.getHeight();
+        newPdf.addImage(imgData, "JPEG", 0, 0, pdfW, pdfH, undefined, "FAST");
+      }
+      return {
+        blob: newPdf.output("blob"),
+        fileName: `pdfmarts_compressed_${baseName}.pdf`,
+      };
+    } catch {
+      const fileBytes = await primaryFile.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(fileBytes);
+      const compressedBytes = await pdfDoc.save({ useObjectStreams: true });
+      return {
+        blob: new Blob([compressedBytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" }),
+        fileName: `pdfmarts_compressed_${baseName}.pdf`,
+      };
+    }
+  }
+
+  // ─── 14. EDIT PDF (Add Annotations / Stamp / Header) ────────────────────────
+  if (tool.id === "edit-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
     const fileBytes = await primaryFile.arrayBuffer();
     const pdfDoc = await PDFDocument.load(fileBytes);
-    const compressedBytes = await pdfDoc.save({ useObjectStreams: true, addDefaultPage: false });
+    const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const customNote = options.annotationText || "APPROVED · PDFMarts";
+    const pages = pdfDoc.getPages();
+    pages.forEach((page) => {
+      page.drawText(customNote, {
+        x: 30,
+        y: 30,
+        size: 10,
+        font: font,
+        color: rgb(0.2, 0.3, 0.8),
+      });
+    });
+    const savedBytes = await pdfDoc.save();
     return {
-      blob: new Blob([compressedBytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" }),
-      fileName: `pdfmarts_compressed_${baseName}.pdf`,
+      blob: new Blob([savedBytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" }),
+      fileName: `pdfmarts_edited_${baseName}.pdf`,
     };
   }
 
-  // ─── 14. CROP PDF ───────────────────────────────────────────────────────────
+  // ─── 15. ORGANIZE PDF (Reorder / Reverse Pages) ─────────────────────────────
+  if (tool.id === "organize-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+    const fileBytes = await primaryFile.arrayBuffer();
+    const pdfDoc = await PDFDocument.load(fileBytes);
+    const pageCount = pdfDoc.getPageCount();
+    const newDoc = await PDFDocument.create();
+    const indices = options.reverse === "true" 
+      ? Array.from({ length: pageCount }, (_, i) => pageCount - 1 - i)
+      : Array.from({ length: pageCount }, (_, i) => i);
+    const copiedPages = await newDoc.copyPages(pdfDoc, indices);
+    copiedPages.forEach((p) => newDoc.addPage(p));
+    const savedBytes = await newDoc.save({ useObjectStreams: true });
+    return {
+      blob: new Blob([savedBytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" }),
+      fileName: `pdfmarts_organized_${baseName}.pdf`,
+    };
+  }
+
+  // ─── 16. CROP PDF ───────────────────────────────────────────────────────────
   if (tool.id === "crop-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
     const fileBytes = await primaryFile.arrayBuffer();
     const pdfDoc = await PDFDocument.load(fileBytes);
@@ -2286,7 +2447,7 @@ async function processFilesForTool(
     };
   }
 
-  // ─── 15. PROTECT / UNLOCK PDF ───────────────────────────────────────────────
+  // ─── 17. PROTECT / UNLOCK PDF ───────────────────────────────────────────────
   if ((tool.id === "protect-pdf" || tool.id === "unlock-pdf") && primaryFile.name.toLowerCase().endsWith(".pdf")) {
     const fileBytes = await primaryFile.arrayBuffer();
     const pdfDoc = await PDFDocument.load(fileBytes);
@@ -2297,7 +2458,7 @@ async function processFilesForTool(
     };
   }
 
-  // ─── 16. IMAGES TO PDF (JPG / PNG / WebP to multi-page PDF) ─────────────────
+  // ─── 18. IMAGES TO PDF (JPG / PNG / WebP to multi-page PDF) ─────────────────
   const isAllImages = files.every(
     (f) => f.type.startsWith("image/") || /\.(jpg|jpeg|png|webp|gif|svg|bmp)$/i.test(f.name)
   );
@@ -2343,7 +2504,7 @@ async function processFilesForTool(
     };
   }
 
-  // ─── 17. WORD TO PDF (DOCX / DOC to PDF) ────────────────────────────────────
+  // ─── 19. WORD TO PDF (DOCX / DOC to PDF) ────────────────────────────────────
   if (/\.(docx|doc)$/i.test(primaryFile.name)) {
     const arrayBuffer = await primaryFile.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
@@ -2393,7 +2554,7 @@ async function processFilesForTool(
     };
   }
 
-  // ─── 18. DEFAULT: Plain text / Code / HTML to PDF ───────────────────────────
+  // ─── 20. DEFAULT: Plain text / Code / HTML to PDF ───────────────────────────
   if (primaryFile.name.toLowerCase().endsWith(".pdf")) {
     return {
       blob: primaryFile,
@@ -2551,7 +2712,12 @@ async function processFilesForTool(
                   className="hidden"
                   accept={tool.accepts}
                   multiple={tool.multiple}
-                  onChange={(e) => e.target.files && handleFiles(Array.from(e.target.files))}
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      handleFiles(Array.from(e.target.files));
+                      e.target.value = "";
+                    }
+                  }}
                 />
                 <div className="space-y-2">
                   <AnimatePresence>
