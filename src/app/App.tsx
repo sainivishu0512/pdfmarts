@@ -1752,39 +1752,49 @@ async function processFilesForTool(
   }
 
   // ─── NEW 1. COMPRESS PDF TO TARGET SIZE (100KB, 200KB, 500KB, Custom) ───────
-  if (tool.id === "compress-pdf-target" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
-    const targetKB = parseInt(options.targetKB || "200", 10);
-    const arrayBuffer = await primaryFile.arrayBuffer();
-    const pdfDoc = await loadPdfJsDoc(arrayBuffer);
-    const numPages = pdfDoc.numPages;
-    const newPdf = new jsPDF({ unit: "pt", format: "a4" });
+  if (tool.id === "compress-pdf-target") {
+    const targetKB = parseInt(options.targetKB || "200", 10) || 200;
+    try {
+      const arrayBuffer = await primaryFile.arrayBuffer();
+      const pdfDoc = await loadPdfJsDoc(arrayBuffer);
+      const numPages = pdfDoc.numPages;
+      const newPdf = new jsPDF({ unit: "pt", format: "a4" });
 
-    const perPageBudgetKB = targetKB / Math.max(1, numPages);
-    const quality = perPageBudgetKB < 30 ? 0.35 : perPageBudgetKB < 60 ? 0.55 : perPageBudgetKB < 120 ? 0.75 : 0.88;
-    const scale = perPageBudgetKB < 30 ? 1.0 : perPageBudgetKB < 60 ? 1.2 : 1.5;
+      const perPageBudgetKB = targetKB / Math.max(1, numPages);
+      const quality = Math.min(0.9, Math.max(0.2, perPageBudgetKB < 30 ? 0.35 : perPageBudgetKB < 60 ? 0.55 : perPageBudgetKB < 120 ? 0.75 : 0.88));
+      const scale = perPageBudgetKB < 30 ? 1.0 : perPageBudgetKB < 60 ? 1.2 : 1.5;
 
-    for (let i = 1; i <= numPages; i++) {
-      if (i > 1) newPdf.addPage();
-      const page = await pdfDoc.getPage(i);
-      const viewport = page.getViewport({ scale });
-      const canvas = document.createElement("canvas");
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      const ctx = canvas.getContext("2d")!;
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      await page.render({ canvasContext: ctx, viewport }).promise;
+      for (let i = 1; i <= numPages; i++) {
+        if (i > 1) newPdf.addPage();
+        const page = await pdfDoc.getPage(i);
+        const viewport = page.getViewport({ scale });
+        const canvas = document.createElement("canvas");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        const ctx = canvas.getContext("2d")!;
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        await page.render({ canvasContext: ctx, viewport }).promise;
 
-      const imgData = canvas.toDataURL("image/jpeg", quality);
-      const pdfW = newPdf.internal.pageSize.getWidth();
-      const pdfH = newPdf.internal.pageSize.getHeight();
-      newPdf.addImage(imgData, "JPEG", 0, 0, pdfW, pdfH, undefined, "FAST");
+        const imgData = canvas.toDataURL("image/jpeg", quality);
+        const pdfW = newPdf.internal.pageSize.getWidth();
+        const pdfH = newPdf.internal.pageSize.getHeight();
+        newPdf.addImage(imgData, "JPEG", 0, 0, pdfW, pdfH, undefined, "FAST");
+      }
+
+      return {
+        blob: newPdf.output("blob"),
+        fileName: `pdfmarts_${targetKB}kb_${baseName}.pdf`,
+      };
+    } catch {
+      const fileBytes = await primaryFile.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
+      const compressedBytes = await pdfDoc.save({ useObjectStreams: true });
+      return {
+        blob: new Blob([compressedBytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" }),
+        fileName: `pdfmarts_${targetKB}kb_${baseName}.pdf`,
+      };
     }
-
-    return {
-      blob: newPdf.output("blob"),
-      fileName: `pdfmarts_${targetKB}kb_${baseName}.pdf`,
-    };
   }
 
   // ─── NEW 2. GRAYSCALE / BLACK AND WHITE PDF ─────────────────────────────────
@@ -2180,14 +2190,19 @@ async function processFilesForTool(
   if (tool.id === "merge-pdf" || (files.length > 1 && tool.category === "Edit PDF")) {
     const mergedPdf = await PDFDocument.create();
     for (const file of files) {
-      if (file.name.toLowerCase().endsWith(".pdf")) {
+      try {
         const fileBytes = await file.arrayBuffer();
-        const srcDoc = await PDFDocument.load(fileBytes);
+        const srcDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
         const copiedPages = await mergedPdf.copyPages(srcDoc, srcDoc.getPageIndices());
         copiedPages.forEach((page) => mergedPdf.addPage(page));
+      } catch (e) {
+        console.warn("Could not read file during merge:", file.name, e);
       }
     }
-    const mergedBytes = await mergedPdf.save();
+    if (mergedPdf.getPageCount() === 0) {
+      throw new Error("Could not merge selected files. Please ensure valid PDF files are selected.");
+    }
+    const mergedBytes = await mergedPdf.save({ useObjectStreams: true });
     return {
       blob: new Blob([mergedBytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" }),
       fileName: `pdfmarts_merged_${baseName}.pdf`,
@@ -2195,9 +2210,9 @@ async function processFilesForTool(
   }
 
   // ─── 8. ROTATE PDF ──────────────────────────────────────────────────────────
-  if (tool.id === "rotate-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+  if (tool.id === "rotate-pdf" && (primaryFile.name.toLowerCase().endsWith(".pdf") || primaryFile.type.includes("pdf"))) {
     const fileBytes = await primaryFile.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(fileBytes);
+    const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
     const angle = parseInt(options.rotation || "90", 10);
     const pages = pdfDoc.getPages();
     pages.forEach((page) => {
@@ -2212,9 +2227,9 @@ async function processFilesForTool(
   }
 
   // ─── 9. WATERMARK PDF ───────────────────────────────────────────────────────
-  if (tool.id === "watermark-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+  if (tool.id === "watermark-pdf" && (primaryFile.name.toLowerCase().endsWith(".pdf") || primaryFile.type.includes("pdf"))) {
     const fileBytes = await primaryFile.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(fileBytes);
+    const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
     const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     const watermarkText = options.watermarkText || "CONFIDENTIAL";
     const pages = pdfDoc.getPages();
@@ -2241,9 +2256,9 @@ async function processFilesForTool(
   }
 
   // ─── 10. PAGE NUMBERS ───────────────────────────────────────────────────────
-  if (tool.id === "page-numbers" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+  if (tool.id === "page-numbers" && (primaryFile.name.toLowerCase().endsWith(".pdf") || primaryFile.type.includes("pdf"))) {
     const fileBytes = await primaryFile.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(fileBytes);
+    const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const pages = pdfDoc.getPages();
     const totalPages = pages.length;
@@ -2268,9 +2283,9 @@ async function processFilesForTool(
   }
 
   // ─── 11. SPLIT / EXTRACT / DELETE PAGES ─────────────────────────────────────
-  if ((tool.id === "split-pdf" || tool.id === "extract-pages" || tool.id === "delete-pages") && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+  if ((tool.id === "split-pdf" || tool.id === "extract-pages" || tool.id === "delete-pages") && (primaryFile.name.toLowerCase().endsWith(".pdf") || primaryFile.type.includes("pdf"))) {
     const fileBytes = await primaryFile.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(fileBytes);
+    const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
     const totalPages = pdfDoc.getPageCount();
     const newDoc = await PDFDocument.create();
 
@@ -2284,7 +2299,6 @@ async function processFilesForTool(
       const validIndex = extractTarget >= 0 && extractTarget < totalPages ? extractTarget : 0;
       targetIndices = [validIndex];
     } else {
-      // Split PDF: keeps first half by default or specified range
       const countToKeep = Math.max(1, Math.ceil(totalPages / 2));
       targetIndices = Array.from({ length: countToKeep }, (_, i) => i);
     }
@@ -2300,9 +2314,9 @@ async function processFilesForTool(
   }
 
   // ─── 12. SIGN PDF ───────────────────────────────────────────────────────────
-  if (tool.id === "sign-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+  if (tool.id === "sign-pdf") {
     const fileBytes = await primaryFile.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(fileBytes);
+    const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
     const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const pages = pdfDoc.getPages();
@@ -2348,7 +2362,7 @@ async function processFilesForTool(
   }
 
   // ─── 13. COMPRESS PDF (Multi-pass browser compression) ──────────────────────
-  if (tool.id === "compress-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+  if (tool.id === "compress-pdf") {
     try {
       const arrayBuffer = await primaryFile.arrayBuffer();
       const pdfDoc = await loadPdfJsDoc(arrayBuffer);
@@ -2381,7 +2395,7 @@ async function processFilesForTool(
       };
     } catch {
       const fileBytes = await primaryFile.arrayBuffer();
-      const pdfDoc = await PDFDocument.load(fileBytes);
+      const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
       const compressedBytes = await pdfDoc.save({ useObjectStreams: true });
       return {
         blob: new Blob([compressedBytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" }),
@@ -2391,16 +2405,26 @@ async function processFilesForTool(
   }
 
   // ─── 14. EDIT PDF (Add Annotations / Stamp / Header) ────────────────────────
-  if (tool.id === "edit-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+  if (tool.id === "edit-pdf") {
     const fileBytes = await primaryFile.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(fileBytes);
+    const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
     const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     const customNote = options.annotationText || "APPROVED · PDFMarts";
     const pages = pdfDoc.getPages();
     pages.forEach((page) => {
+      const { width, height } = page.getSize();
+      page.drawRectangle({
+        x: 20,
+        y: height - 40,
+        width: Math.min(width - 40, 220),
+        height: 25,
+        color: rgb(0.95, 0.96, 1.0),
+        borderColor: rgb(0.3, 0.4, 0.9),
+        borderWidth: 1,
+      });
       page.drawText(customNote, {
-        x: 30,
-        y: 30,
+        x: 28,
+        y: height - 32,
         size: 10,
         font: font,
         color: rgb(0.2, 0.3, 0.8),
@@ -2414,9 +2438,9 @@ async function processFilesForTool(
   }
 
   // ─── 15. ORGANIZE PDF (Reorder / Reverse Pages) ─────────────────────────────
-  if (tool.id === "organize-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+  if (tool.id === "organize-pdf") {
     const fileBytes = await primaryFile.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(fileBytes);
+    const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
     const pageCount = pdfDoc.getPageCount();
     const newDoc = await PDFDocument.create();
     const indices = options.reverse === "true" 
@@ -2432,9 +2456,9 @@ async function processFilesForTool(
   }
 
   // ─── 16. CROP PDF ───────────────────────────────────────────────────────────
-  if (tool.id === "crop-pdf" && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+  if (tool.id === "crop-pdf") {
     const fileBytes = await primaryFile.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(fileBytes);
+    const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
     const pages = pdfDoc.getPages();
     pages.forEach((page) => {
       const { x, y, width, height } = page.getMediaBox();
@@ -2448,9 +2472,9 @@ async function processFilesForTool(
   }
 
   // ─── 17. PROTECT / UNLOCK PDF ───────────────────────────────────────────────
-  if ((tool.id === "protect-pdf" || tool.id === "unlock-pdf") && primaryFile.name.toLowerCase().endsWith(".pdf")) {
+  if (tool.id === "protect-pdf" || tool.id === "unlock-pdf") {
     const fileBytes = await primaryFile.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(fileBytes);
+    const pdfDoc = await PDFDocument.load(fileBytes, { ignoreEncryption: true });
     const savedBytes = await pdfDoc.save();
     return {
       blob: new Blob([savedBytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" }),
