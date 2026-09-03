@@ -2,8 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="PDFMarts" />
+    <meta name="format-detection" content="telephone=no" />
 
     <!-- Primary Page Metadata -->
     <title>PDFMarts - Free Online PDF Tools, Converter & Editor</title>
@@ -174,9 +179,25 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2050955694853570" crossorigin="anonymous"></script>
 
     <style>
-      html, body { height: 100%; margin: 0; }
-      #root { height: 100%; }
+      html, body {
+        height: 100%;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        touch-action: manipulation;
+        scroll-behavior: smooth;
+      }
+      #root {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
       .seo-crawler-links { display: none; }
+      @supports (padding-bottom: env(safe-area-inset-bottom)) {
+        body {
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+      }
     </style>
   </head>
 

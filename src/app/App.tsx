@@ -305,11 +305,11 @@ function UploadZone({
   return (
     <div
       className={cn(
-        "relative flex flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed cursor-pointer select-none transition-all duration-200",
-        compact ? "p-10" : "p-16 md:p-20",
+        "relative flex flex-col items-center justify-center gap-3 sm:gap-4 rounded-3xl border-2 border-dashed cursor-pointer select-none transition-all duration-200 active:scale-[0.99]",
+        compact ? "p-6 sm:p-8" : "p-6 sm:p-12 md:p-16",
         dragging
           ? "border-primary bg-accent/40 scale-[1.01]"
-          : "border-border bg-muted/20 hover:border-primary/40 hover:bg-accent/10"
+          : "border-border bg-muted/20 hover:border-primary/40 hover:bg-accent/10 shadow-sm"
       )}
       onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
       onDragLeave={(e) => { e.preventDefault(); setDragging(false); }}
@@ -334,24 +334,25 @@ function UploadZone({
       />
       <div className={cn(
         "flex items-center justify-center rounded-2xl bg-primary/10",
-        compact ? "w-16 h-16" : "w-24 h-24"
+        compact ? "w-12 h-12 sm:w-16 sm:h-16" : "w-16 h-16 sm:w-20 sm:h-20"
       )}>
-        <Upload className={cn("text-primary", compact ? "w-8 h-8" : "w-12 h-12")} />
+        <Upload className={cn("text-primary", compact ? "w-6 h-6 sm:w-8 sm:h-8" : "w-8 h-8 sm:w-10 sm:h-10")} />
       </div>
-      <div className="text-center">
-        <p className={cn("font-bold text-foreground", compact ? "text-lg" : "text-2xl")}>
-          {dragging ? (t("dropFilesActive") || "Drop your files here") : (t("dropFiles") || "Drag & drop your files")}
+      <div className="text-center px-2">
+        <p className={cn("font-bold text-foreground", compact ? "text-base sm:text-lg" : "text-xl sm:text-2xl")}>
+          {dragging ? (t("dropFilesActive") || "Drop your files here") : (t("dropFiles") || "Tap or drag files here")}
         </p>
-        <p className="text-muted-foreground text-sm mt-2">{t("orClick") || "or click to browse from your computer"}</p>
+        <p className="text-muted-foreground text-xs sm:text-sm mt-1">{t("orClick") || "Browse files from device or take photo"}</p>
       </div>
       <Button
         size={compact ? "sm" : "md"}
+        className="min-h-[44px] px-6 text-sm"
         onClick={(e) => { e && (e as React.MouseEvent).stopPropagation(); inputRef.current?.click(); }}
       >
-        {t("selectFiles") || "Select Files"}
+        {t("selectFiles") || "Choose File"}
       </Button>
       {!compact && (
-        <p className="text-xs text-muted-foreground">{t("fileTypesHint") || "PDF, Word, Excel, PowerPoint, JPG, PNG · Max 50MB free"}</p>
+        <p className="text-[11px] sm:text-xs text-muted-foreground">{t("fileTypesHint") || "PDF, Word, Excel, PPT, JPG, PNG · 100% Free & Unlimited"}</p>
       )}
     </div>
   );
@@ -894,7 +895,7 @@ function HeroSection() {
   const { navigate, t } = useRouter();
 
   return (
-    <section className="relative pt-32 pb-24 px-4 overflow-hidden">
+    <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 overflow-hidden">
       <div className="absolute inset-0 -z-10" aria-hidden="true">
         <div
           className="absolute inset-0"
@@ -908,22 +909,22 @@ function HeroSection() {
 
       <div className="max-w-4xl mx-auto text-center">
         <div
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold mb-8"
+          className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold mb-6 sm:mb-8 max-w-full truncate"
           style={{ background: "#EDE9FE", color: "#4F46E5" }}
         >
           {t("heroBadge") || "✦ 25+ Professional PDF Tools — 100% Free & Private"}
         </div>
 
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
           {t("heroTitle1") || "All Your PDF Tools."}{" "}
           <span className="text-primary">{t("heroTitle2") || "One Simple Place."}</span>
         </h1>
 
-        <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-4 sm:mt-6 text-sm sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-2">
           {t("heroSubtitle") || "Merge, split, compress, convert, edit, and sign PDFs directly in your browser. Zero cloud uploads, 100% free and client-side private."}
         </p>
 
-        <div className="mt-12">
+        <div className="mt-8 sm:mt-12">
           <UploadZone
             onFiles={(files) => {
               const bestTool = detectBestToolForFiles(files);
@@ -934,10 +935,10 @@ function HeroSection() {
           />
         </div>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground">
-          {[t("badgeFree") || "100% Free & Unlimited", t("badgeNoReg") || "No Registration Required", t("badgeLocal") || "Files Processed Locally in Browser"].map(text => (
-            <span key={text} className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 text-xs sm:text-sm text-muted-foreground">
+          {[t("badgeFree") || "100% Free & Unlimited", t("badgeNoReg") || "No Registration", t("badgeLocal") || "100% Local In Browser"].map(text => (
+            <span key={text} className="flex items-center gap-1.5">
+              <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500 flex-shrink-0" />
               {text}
             </span>
           ))}
@@ -2766,11 +2767,22 @@ async function processFilesForTool(
               <ToolSettings toolId={tool.id} options={options} setOptions={setOptions} />
 
               <div className="flex gap-3 pt-2">
-                <Button fullWidth size="lg" onClick={handleProcess}>
+                <Button fullWidth size="lg" className="min-h-[48px] text-sm sm:text-base font-bold shadow-md" onClick={handleProcess}>
                   <Icon className="w-5 h-5" />
                   {tool.actionLabel}
                 </Button>
-                <Button variant="outline" size="lg" onClick={handleReset}>
+                <Button variant="outline" size="lg" className="min-h-[48px]" onClick={handleReset}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+
+              {/* Mobile Floating Bottom Action Bar for 1-Tap Processing */}
+              <div className="md:hidden fixed bottom-14 left-0 right-0 p-3 bg-card/95 backdrop-blur-md border-t border-border z-30 shadow-2xl flex gap-2">
+                <Button fullWidth size="md" className="h-12 text-sm font-bold shadow-lg" onClick={handleProcess}>
+                  <Icon className="w-4 h-4" />
+                  {tool.actionLabel}
+                </Button>
+                <Button variant="outline" size="md" className="h-12 px-4" onClick={handleReset}>
                   <X className="w-4 h-4" />
                 </Button>
               </div>
@@ -2783,13 +2795,13 @@ async function processFilesForTool(
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="p-10 bg-card rounded-2xl border border-border text-center"
+              className="p-8 sm:p-10 bg-card rounded-3xl border border-border text-center shadow-sm"
             >
-              <div className="flex items-center justify-center mb-6">
+              <div className="flex items-center justify-center mb-4 sm:mb-6">
                 <Loader2 className="w-10 h-10 text-primary animate-spin" />
               </div>
-              <h3 className="font-bold text-xl mb-2">Processing {tool.name}…</h3>
-              <p className="text-muted-foreground text-sm">Running client-side conversion engine in your browser</p>
+              <h3 className="font-bold text-lg sm:text-xl mb-1.5">Processing {tool.name}…</h3>
+              <p className="text-muted-foreground text-xs sm:text-sm">Running client-side conversion engine in your browser</p>
             </motion.div>
           )}
 
@@ -2797,30 +2809,41 @@ async function processFilesForTool(
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="p-10 bg-card rounded-2xl border border-border text-center"
+              className="p-8 sm:p-10 bg-card rounded-3xl border border-border text-center shadow-sm"
             >
-              <div className="flex items-center justify-center mb-6">
-                <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: "#ECFDF5" }}>
-                  <CheckCircle className="w-8 h-8 text-green-600" />
+              <div className="flex items-center justify-center mb-4 sm:mb-6">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center" style={{ background: "#ECFDF5" }}>
+                  <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-green-600" />
                 </div>
               </div>
-              <h3 className="font-bold text-2xl mb-2">Done! Your file is ready.</h3>
-              <p className="text-muted-foreground mb-4">
+              <h3 className="font-bold text-xl sm:text-2xl mb-1.5">Done! Your file is ready.</h3>
+              <p className="text-muted-foreground text-xs sm:text-sm mb-4">
                 {tool.name} processed successfully:
               </p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-muted/60 font-mono text-sm mb-8">
-                <FileText className="w-4 h-4 text-primary" />
-                <span className="font-semibold text-foreground">{result.fileName}</span>
-                <span className="text-xs text-muted-foreground">({formatFileSize(result.blob.size)})</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-muted/60 font-mono text-xs sm:text-sm mb-6 max-w-full truncate">
+                <FileText className="w-4 h-4 text-primary flex-shrink-0" />
+                <span className="font-semibold text-foreground truncate">{result.fileName}</span>
+                <span className="text-xs text-muted-foreground flex-shrink-0">({formatFileSize(result.blob.size)})</span>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button size="lg" onClick={handleDownload}>
+                <Button size="lg" className="min-h-[48px] text-sm sm:text-base font-bold shadow-md" onClick={handleDownload}>
                   <Download className="w-5 h-5" />
                   Download File
                 </Button>
-                <Button variant="outline" size="lg" onClick={handleReset}>
+                <Button variant="outline" size="lg" className="min-h-[48px]" onClick={handleReset}>
                   <RefreshCw className="w-4 h-4" />
                   Convert Another
+                </Button>
+              </div>
+
+              {/* Mobile Floating Download Bar */}
+              <div className="md:hidden fixed bottom-14 left-0 right-0 p-3 bg-card/95 backdrop-blur-md border-t border-border z-30 shadow-2xl flex gap-2">
+                <Button fullWidth size="md" className="h-12 text-sm font-bold shadow-lg bg-green-600 hover:bg-green-700 text-white" onClick={handleDownload}>
+                  <Download className="w-4 h-4" />
+                  Download File
+                </Button>
+                <Button variant="outline" size="md" className="h-12 px-4" onClick={handleReset}>
+                  <RefreshCw className="w-4 h-4" />
                 </Button>
               </div>
 
@@ -3053,6 +3076,114 @@ function renderPage(route: string, toolId: string | null) {
   }
 }
 
+function MobileBottomNav() {
+  const { navigate, route, setLang, lang } = useRouter();
+  const [langSheetOpen, setLangSheetOpen] = useState(false);
+
+  return (
+    <>
+      <AnimatePresence>
+        {langSheetOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex flex-col justify-end md:hidden"
+            onClick={() => setLangSheetOpen(false)}
+          >
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 280 }}
+              className="bg-card rounded-t-3xl border-t border-border p-5 space-y-4 max-h-[70vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-12 h-1.5 bg-muted rounded-full mx-auto mb-2" />
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-base">Select Language</h3>
+                <button
+                  onClick={() => setLangSheetOpen(false)}
+                  className="p-1.5 rounded-full hover:bg-muted text-muted-foreground"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {SUPPORTED_LANGUAGES.map((l) => (
+                  <button
+                    key={l.code}
+                    onClick={() => {
+                      setLang(l.code);
+                      setLangSheetOpen(false);
+                      toast.success(`Language set to ${l.nativeName}`);
+                    }}
+                    className={cn(
+                      "flex items-center gap-2.5 p-3 rounded-2xl border text-xs font-semibold transition-all",
+                      lang === l.code
+                        ? "border-primary bg-primary/10 text-primary shadow-sm"
+                        : "border-border bg-muted/20 hover:bg-muted"
+                    )}
+                  >
+                    <span className="text-lg">{l.flag}</span>
+                    <span className="truncate">{l.nativeName}</span>
+                    {lang === l.code && <Check className="w-3.5 h-3.5 ml-auto text-primary" />}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-card/95 backdrop-blur-lg border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.06)] pb-[env(safe-area-inset-bottom,0px)]">
+        <div className="grid grid-cols-4 items-center h-14 px-2">
+          <button
+            onClick={() => navigate("home")}
+            className={cn(
+              "flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition-colors",
+              route === "home" ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <FileText className="w-5 h-5" />
+            <span className="text-[10px]">Home</span>
+          </button>
+
+          <button
+            onClick={() => navigate("tools")}
+            className={cn(
+              "flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition-colors",
+              route === "tools" ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <LayoutGrid className="w-5 h-5" />
+            <span className="text-[10px]">All Tools</span>
+          </button>
+
+          <button
+            onClick={() => navigate("tool", "compress-pdf-target")}
+            className={cn(
+              "flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition-colors",
+              route === "tool" ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <Zap className="w-5 h-5" />
+            <span className="text-[10px]">Fast Tools</span>
+          </button>
+
+          <button
+            onClick={() => setLangSheetOpen(true)}
+            className="flex flex-col items-center justify-center gap-1 py-1 rounded-xl text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Globe className="w-5 h-5" />
+            <span className="text-[10px] uppercase font-semibold">{lang}</span>
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
+
 export default function App() {
   const initial = parseUrlToRoute();
   const [route, setRoute] = useState(initial.route);
@@ -3114,7 +3245,7 @@ export default function App() {
   return (
     <RouterContext.Provider value={{ route, toolId, initialFiles, lang, setLang, t, navigate }}>
       <SEOHead route={route} toolId={toolId} lang={lang} />
-      <div className="min-h-screen bg-background text-foreground flex flex-col">
+      <div className="min-h-screen bg-background text-foreground flex flex-col pb-16 md:pb-0">
         <Toaster position="top-right" richColors />
         <Header />
         <main className="flex-1">
@@ -3126,6 +3257,7 @@ export default function App() {
           <AdBanner />
         </div>
         <Footer />
+        <MobileBottomNav />
       </div>
     </RouterContext.Provider>
   );
