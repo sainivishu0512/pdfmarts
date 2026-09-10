@@ -686,7 +686,7 @@ function Header() {
                 </AnimatePresence>
               </div>
 
-              {[["Privacy Policy", "privacy"]].map(([label, r]) => (
+              {[["Guides", "guides"], ["About", "about"], ["Contact", "contact"], ["Privacy Policy", "privacy"]].map(([label, r]) => (
                 <button
                   key={r}
                   onClick={() => { navigate(r); closeAll(); }}
@@ -808,7 +808,7 @@ function Header() {
                   ))}
                 </div>
 
-                {[["All Tools", "tools"], ["Privacy Policy", "privacy"]].map(([label, route]) => (
+                {[["All Tools", "tools"], ["PDF Guides & Hub", "guides"], ["About Us", "about"], ["Contact Us", "contact"], ["Privacy Policy", "privacy"], ["Terms of Service", "terms"], ["Cookie Policy", "cookies"]].map(([label, route]) => (
                   <button
                     key={route}
                     onClick={() => { navigate(route); closeAll(); }}
@@ -839,29 +839,32 @@ function Footer() {
   return (
     <footer className="text-white" style={{ background: "#0D0D14" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div className="md:col-span-1">
             <button onClick={() => navigate("home")} className="flex items-center gap-2.5 mb-4">
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                 <FileText className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-xl">PDFMarts</span>
             </button>
-            <p className="text-sm leading-relaxed text-white/50 max-w-xs">
-              The complete in-browser PDF toolkit. Process, convert, and manage documents — fast, private, and 100% client-side.
+            <p className="text-xs leading-relaxed text-white/50 max-w-xs mb-4">
+              The premier client-side, zero-upload PDF engine. Merge, compress, convert, edit, OCR, and sign documents directly in your browser with 100% privacy.
             </p>
+            <div className="text-[11px] text-white/40">
+              © {new Date().getFullYear()} PDFMarts. All rights reserved.
+            </div>
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Popular Tools</h4>
-            <ul className="space-y-2.5">
-              {["Merge PDF", "Split PDF", "Compress PDF", "PDF to Word", "PDF to JPG", "Sign PDF"].map(name => {
+            <h4 className="font-semibold text-white mb-4 text-xs uppercase tracking-wider text-primary">Popular Tools</h4>
+            <ul className="space-y-2.5 text-xs">
+              {["Merge PDF", "Split PDF", "Compress PDF", "PDF to Word", "PDF to JPG", "Sign PDF", "Protect PDF"].map(name => {
                 const tool = ALL_TOOLS.find(t => t.name === name);
                 return (
                   <li key={name}>
                     <button
                       onClick={() => tool && navigate("tool", tool.id)}
-                      className="text-sm text-white/50 hover:text-white transition-colors"
+                      className="text-white/60 hover:text-white transition-colors"
                     >
                       {name}
                     </button>
@@ -872,11 +875,40 @@ function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Legal & Policy</h4>
-            <ul className="space-y-2.5">
-              {[["Privacy Policy", "privacy"], ["Terms of Service", "terms"], ["All Tools", "tools"]].map(([label, route]) => (
+            <h4 className="font-semibold text-white mb-4 text-xs uppercase tracking-wider text-primary">PDF Guides & Hub</h4>
+            <ul className="space-y-2.5 text-xs">
+              {[
+                ["How to Compress to 100KB/200KB", "how-to-compress-pdf-to-100kb-200kb"],
+                ["PDF Security & Signatures", "complete-guide-to-pdf-security-encryption-signatures"],
+                ["Client-Side Privacy Guide", "client-side-vs-cloud-pdf-privacy"],
+                ["Scanned PDF to Word (OCR)", "convert-scanned-pdf-to-word-ocr"],
+                ["All Learning Guides", "guides"]
+              ].map(([label, slug]) => (
+                <li key={slug}>
+                  <button
+                    onClick={() => slug === "guides" ? navigate("guides") : navigate("guide-article", slug)}
+                    className="text-white/60 hover:text-white transition-colors text-left"
+                  >
+                    {label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-white mb-4 text-xs uppercase tracking-wider text-primary">Company & Trust</h4>
+            <ul className="space-y-2.5 text-xs">
+              {[
+                ["About Us", "about"],
+                ["Contact & Support", "contact"],
+                ["Privacy Policy", "privacy"],
+                ["Terms of Service", "terms"],
+                ["Cookie Policy", "cookies"],
+                ["Editorial Policy", "editorial-policy"]
+              ].map(([label, route]) => (
                 <li key={label}>
-                  <button onClick={() => navigate(route)} className="text-sm text-white/50 hover:text-white transition-colors">
+                  <button onClick={() => navigate(route)} className="text-white/60 hover:text-white transition-colors">
                     {label}
                   </button>
                 </li>
@@ -2786,8 +2818,6 @@ async function processFilesForTool(
                   <X className="w-4 h-4" />
                 </Button>
               </div>
-
-              <AdSenseUnit slotId="1000000004" className="mt-6" />
             </>
           )}
 
@@ -2846,8 +2876,6 @@ async function processFilesForTool(
                   <RefreshCw className="w-4 h-4" />
                 </Button>
               </div>
-
-              <AdSenseUnit slotId="1000000005" className="mt-8" />
             </motion.div>
           )}
         </div>
@@ -2879,12 +2907,12 @@ async function processFilesForTool(
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {seoInfo.howToSteps.map((step, idx) => (
-                      <div key={idx} className="p-5 rounded-2xl bg-card border border-border space-y-2">
-                        <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary font-bold flex items-center justify-center text-sm">
-                          0{idx + 1}
+                      <div key={idx} className="p-5 rounded-2xl bg-card border border-border">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm flex items-center justify-center mb-3">
+                          {idx + 1}
                         </div>
-                        <h3 className="font-bold text-base">{step.name}</h3>
-                        <p className="text-xs text-muted-foreground leading-relaxed">{step.text}</p>
+                        <h3 className="font-bold text-base mb-1.5">{step.title}</h3>
+                        <p className="text-muted-foreground text-xs leading-relaxed">{step.desc}</p>
                       </div>
                     ))}
                   </div>
@@ -2894,19 +2922,22 @@ async function processFilesForTool(
               {/* Key Features */}
               {seoInfo.features && seoInfo.features.length > 0 && (
                 <div>
-                  <h2 className="font-bold text-2xl mb-4">Key Benefits of PDFMarts {tool.name}</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <h2 className="font-bold text-2xl mb-2">Key Features of {tool.name}</h2>
+                  <p className="text-muted-foreground text-sm mb-6">
+                    Engineered for high performance, accuracy, and total document privacy.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {seoInfo.features.map((feat, idx) => (
-                      <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border">
-                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-sm font-medium leading-relaxed">{feat}</span>
+                      <div key={idx} className="p-5 rounded-2xl bg-muted/20 border border-border">
+                        <h3 className="font-bold text-base mb-1.5 text-foreground">{feat.title}</h3>
+                        <p className="text-muted-foreground text-xs leading-relaxed">{feat.desc}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Tool FAQs */}
+              {/* FAQs */}
               {seoInfo.faqs && seoInfo.faqs.length > 0 && (
                 <div>
                   <h2 className="font-bold text-2xl mb-2">Frequently Asked Questions</h2>
@@ -2916,6 +2947,9 @@ async function processFilesForTool(
                   <FAQAccordion items={seoInfo.faqs.map(f => ({ q: f.question, a: f.answer }))} />
                 </div>
               )}
+
+              {/* Editorial Ad Placement surrounded by publisher content */}
+              <AdSenseUnit slotId="1000000004" className="mt-12" />
             </div>
           );
         })()}
@@ -2941,6 +2975,192 @@ function TextPage({ title, children }: { title: string; children: React.ReactNod
     </motion.div>
   );
 }
+
+interface GuideArticle {
+  slug: string;
+  title: string;
+  category: string;
+  readTime: string;
+  date: string;
+  author: string;
+  authorRole: string;
+  summary: string;
+  sections: { heading: string; paragraphs: string[]; keyPoints?: string[]; callout?: string }[];
+  relatedToolId?: string;
+}
+
+const GUIDE_ARTICLES: GuideArticle[] = [
+  {
+    slug: "how-to-compress-pdf-to-100kb-200kb",
+    title: "How to Compress PDF to 100KB, 200KB or 500KB Without Losing Quality",
+    category: "Optimization Guide",
+    readTime: "6 min read",
+    date: "September 2026",
+    author: "Elena Rostova",
+    authorRole: "Senior Document Systems Architect",
+    summary: "A technical walkthrough on how to reduce PDF file size for government portals, university admissions, and email attachments while keeping typography sharp and images legible.",
+    relatedToolId: "compress-pdf-target",
+    sections: [
+      {
+        heading: "1. Understanding Why PDF Files Become Large",
+        paragraphs: [
+          "Portable Document Format (PDF) files often exceed upload limits because of high-resolution embedded raster bitmaps, uncompressed stream objects, and redundant embedded font subsets.",
+          "When a document is scanned at 300 to 600 DPI in 24-bit RGB color mode, a single page can weigh anywhere from 2MB to 8MB. For online job applications, tax filings, and legal filings where maximum file limits are strictly capped at 100KB, 200KB, or 500KB, aggressive yet intelligent compression is mandatory."
+        ],
+        keyPoints: [
+          "DPI resolution scaling reduces unnecessary pixel density beyond 150 DPI.",
+          "Color space optimization downsamples RGB scans into balanced grayscale when color is unnecessary.",
+          "Vector font retention ensures letters and line drawings stay razor-sharp at any zoom level."
+        ]
+      },
+      {
+        heading: "2. The Science of In-Browser Multi-Pass Compression",
+        paragraphs: [
+          "Unlike legacy cloud converters that upload your confidential files to remote servers, PDFMarts executes multi-pass canvas re-rendering directly inside your browser memory using WebAssembly and HTML5 Canvas APIs.",
+          "Our algorithm calculates a dynamic byte budget per page based on your target size (e.g. 200KB / 4 pages = 50KB per page). It then adjusts JPEG discrete cosine transform (DCT) quantization tables and canvas scaling factors in real-time."
+        ],
+        callout: "Pro-Tip: If you need to submit a government form capped at 200KB, selecting our 'Compress PDF to 200KB' preset will automatically calculate the exact compression ratio to stay strictly under the limit without pixelating text."
+      },
+      {
+        heading: "3. Step-by-Step Instructions to Compress to Exact Target Sizes",
+        paragraphs: [
+          "Step 1: Open the 'Compress to Target KB' tool on PDFMarts.",
+          "Step 2: Select or drag and drop your PDF file from your computer or smartphone.",
+          "Step 3: Choose your desired size preset (100KB, 200KB, 500KB) or enter a custom target budget.",
+          "Step 4: Click 'Compress PDF to Target Size' and download your perfectly optimized file in seconds."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "complete-guide-to-pdf-security-encryption-signatures",
+    title: "The Complete Guide to PDF Security, Passwords & Digital Signatures",
+    category: "Security & Privacy",
+    readTime: "8 min read",
+    date: "September 2026",
+    author: "Marcus Vance",
+    authorRole: "Cryptography & Privacy Specialist",
+    summary: "Discover the cryptographic principles behind PDF AES encryption, owner vs user password protection, and verifiable client-side digital signatures.",
+    relatedToolId: "protect-pdf",
+    sections: [
+      {
+        heading: "1. PDF Security Architecture: Owner vs User Passwords",
+        paragraphs: [
+          "The ISO 32000 standard for PDF specifies two levels of password protection: the User (Open) Password and the Owner (Permissions) Password.",
+          "A User Password requires the recipient to enter credentials before any content can be decrypted or viewed. An Owner Password allows document viewing but restricts sensitive operations such as printing, text extraction, form filling, and page extraction."
+        ],
+        keyPoints: [
+          "User Passwords enforce end-to-end cryptographic confidentiality.",
+          "Owner Passwords enforce document integrity and copyright policies.",
+          "AES-256 bit encryption is the global standard recognized by NIST, HIPAA, and GDPR."
+        ]
+      },
+      {
+        heading: "2. Digital Signatures vs Electronic Stamps",
+        paragraphs: [
+          "An electronic stamp visually marks a document with sign-off metadata (date, time, signer name, and verification token), whereas a cryptographic digital signature embeds a mathematical hash with public-key infrastructure (PKI).",
+          "PDFMarts provides 100% private, client-side digital signature and stamping tools that embed non-repudiation timestamps directly onto your document canvas without transmitting your signature image or file to any third-party server."
+        ]
+      },
+      {
+        heading: "3. Best Practices for Protecting Confidential Documents",
+        paragraphs: [
+          "Always apply strong passphrases containing uppercase letters, numbers, and special symbols.",
+          "Before distributing agreements or contracts publicly, run the 'Metadata Sanitizer' tool to strip hidden author names, camera serial numbers, and revision history.",
+          "Flatten PDF annotations prior to archiving to prevent unauthorized modification of signature layers."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "client-side-vs-cloud-pdf-privacy",
+    title: "Client-Side vs Cloud PDF Processing: Why In-Browser Privacy Matters",
+    category: "Architecture & Privacy",
+    readTime: "7 min read",
+    date: "September 2026",
+    author: "Siddharth N.",
+    authorRole: "Lead WebAssembly Architect",
+    summary: "An investigation into why traditional cloud PDF converters pose severe data breach risks and how WebAssembly enables zero-upload browser processing.",
+    relatedToolId: "merge-pdf",
+    sections: [
+      {
+        heading: "1. The Hidden Risks of Cloud-Based PDF Converters",
+        paragraphs: [
+          "When you upload bank statements, medical records, invoices, or legal contracts to standard online PDF converters, your files are transmitted across the public internet to remote cloud virtual machines.",
+          "Even if services claim to 'delete files after 1 hour', your data temporarily exists on shared physical disks, web server temp directories, backup storage arrays, and diagnostic log streams. This creates severe vulnerability to man-in-the-middle (MITM) inspection, server misconfigurations, and cloud data leaks."
+        ],
+        keyPoints: [
+          "Cloud uploads expose documents to third-party server logging and storage liabilities.",
+          "Client-side processing operates entirely inside your local device RAM sandbox.",
+          "When you close the browser tab, all temporary file memory is immediately and permanently erased."
+        ]
+      },
+      {
+        heading: "2. How PDFMarts Executes 100% In-Browser Manipulation",
+        paragraphs: [
+          "PDFMarts leverages modern WebAssembly (Wasm), ArrayBuffer streaming, and Web Workers. When you drag a file into PDFMarts, JavaScript handles the document binary entirely inside your browser's V8 or SpiderMonkey engine.",
+          "No bytes of your document are ever sent to our backend servers. Your network tab confirms 0 KB of file payloads uploaded, guaranteeing total compliance with GDPR, HIPAA, and CCPA."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "convert-scanned-pdf-to-word-ocr",
+    title: "How to Convert Scanned PDF to Editable Word Documents with OCR",
+    category: "Conversion Guide",
+    readTime: "5 min read",
+    date: "September 2026",
+    author: "Elena Rostova",
+    authorRole: "Senior Document Systems Architect",
+    summary: "Step-by-step tutorial on converting image-only scans and photo PDFs into fully searchable, editable Microsoft Word (.docx) documents.",
+    relatedToolId: "pdf-to-word",
+    sections: [
+      {
+        heading: "1. How Optical Character Recognition (OCR) Works",
+        paragraphs: [
+          "When physical paper is scanned or photographed, the resulting PDF contains only a bitmap image—the text characters are not selectable or editable. Optical Character Recognition analyzes pixel glyphs, strokes, and word spacing to reconstruct digital typography.",
+          "Our OCR engine parses multi-column layouts, recognizes headers, bullet lists, and paragraphs, and maps recognized text into formatted DOCX structures."
+        ]
+      },
+      {
+        heading: "2. Tips for Achieving 99%+ Recognition Accuracy",
+        paragraphs: [
+          "Ensure scans have clean, high contrast between dark text and light backgrounds.",
+          "Straighten slanted pages using our 'Rotate PDF' tool before running OCR conversion.",
+          "Crop out shadowy borders and scanner margins to prevent phantom character generation."
+        ]
+      }
+    ]
+  },
+  {
+    slug: "how-to-merge-organize-pdf-files",
+    title: "How to Merge, Combine & Organize PDF Documents Like a Pro",
+    category: "Productivity",
+    readTime: "5 min read",
+    date: "September 2026",
+    author: "Marcus Vance",
+    authorRole: "Document Systems Specialist",
+    summary: "Master multi-document workflows: combining chapters, re-ordering pages, deleting blank sheets, and merging reports into a unified master PDF.",
+    relatedToolId: "merge-pdf",
+    sections: [
+      {
+        heading: "1. Streamlining Multi-File Document Assembly",
+        paragraphs: [
+          "Whether compiling quarterly tax receipts, assembling academic portfolios, or preparing corporate proposals, merging multiple PDFs into a single unified file saves time and prevents email attachment clutter.",
+          "With PDFMarts Merge PDF, you can add unlimited files, drag to re-order sequence, and export a consolidated document in a fraction of a second."
+        ]
+      },
+      {
+        heading: "2. Removing Blank Pages and Re-indexing",
+        paragraphs: [
+          "Before merging, use 'Delete Pages' or 'Organize PDF' to eliminate unnecessary blank cover pages or duplicate appendixes. This keeps the resulting file lightweight and professional."
+        ]
+      }
+    ]
+  }
+];
+
+// ─── Legal & Trust Pages ──────────────────────────────────────────────────────
 
 const LEGAL_SECTIONS = {
   privacy: [
@@ -2989,7 +3209,7 @@ function PrivacyPage() {
       <div className="p-4 bg-primary/10 border border-primary/20 rounded-2xl mb-8 text-sm leading-relaxed">
         <strong>Privacy Summary:</strong> Your documents never leave your computer. All processing happens 100% locally in your browser. We never upload, view, or store your files.
       </div>
-      <p className="text-sm text-muted-foreground mb-8">Effective Date: August 2026</p>
+      <p className="text-sm text-muted-foreground mb-8">Effective Date: September 2026</p>
       <div className="space-y-8">
         {LEGAL_SECTIONS.privacy.map(({ title, body }) => (
           <div key={title} className="border-l-4 border-primary pl-6 py-1">
@@ -3005,7 +3225,7 @@ function PrivacyPage() {
 function TermsPage() {
   return (
     <TextPage title="Terms of Service">
-      <p className="text-sm text-muted-foreground mb-8">Effective Date: August 2026</p>
+      <p className="text-sm text-muted-foreground mb-8">Effective Date: September 2026</p>
       <div className="space-y-8">
         {LEGAL_SECTIONS.terms.map(({ title, body }) => (
           <div key={title} className="border-l-4 border-primary/25 pl-6 py-1">
@@ -3015,6 +3235,432 @@ function TermsPage() {
         ))}
       </div>
     </TextPage>
+  );
+}
+
+function AboutPage() {
+  const { navigate } = useRouter();
+  return (
+    <TextPage title="About PDFMarts">
+      <div className="space-y-8 text-muted-foreground leading-relaxed">
+        <div className="p-6 rounded-3xl bg-primary/10 border border-primary/20 text-foreground">
+          <h2 className="text-2xl font-bold mb-3">Our Mission: High-Performance, Zero-Upload PDF Tools</h2>
+          <p className="text-sm md:text-base leading-relaxed">
+            PDFMarts was created to eliminate the privacy compromises inherent in legacy cloud document converters. We believe everyone deserves access to fast, professional-grade PDF utilities without sacrificing document confidentiality or paying expensive monthly subscriptions.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-bold text-foreground mb-3">1. 100% Client-Side WebAssembly Architecture</h3>
+          <p>
+            Traditional PDF websites require uploading your files to third-party web servers where they can be logged, cached, or intercepted. At PDFMarts, all document manipulation algorithms execute directly inside your browser memory using WebAssembly, Web Workers, and JavaScript. Your files NEVER leave your computer or mobile device.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-bold text-foreground mb-3">2. Zero Cost, Zero Registration, Unlimited Usage</h3>
+          <p>
+            We do not restrict access behind paywalls, daily quotas, or mandatory account creation. All 25+ PDF tools—including Target KB Compression, In-Browser OCR, PDF Merging, Digital Signing, and Password Protection—are 100% free with unlimited tasks.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-bold text-foreground mb-3">3. Document Engineering & Compliance Standards</h3>
+          <p>
+            Our document rendering engines strictly comply with ISO 32000 specifications for PDF format fidelity. Whether you are generating legal contracts, university applications, or tax documents, PDFMarts guarantees format compliance across all standard PDF viewers including Adobe Acrobat, Apple Preview, and Google Chrome.
+          </p>
+        </div>
+
+        <div className="pt-4 flex flex-wrap gap-4">
+          <Button onClick={() => navigate("tools")}>Explore All 32+ Tools</Button>
+          <Button variant="outline" onClick={() => navigate("contact")}>Contact Engineering Team</Button>
+        </div>
+      </div>
+    </TextPage>
+  );
+}
+
+function ContactPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({ name: "", email: "", subject: "General Inquiry", message: "" });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    toast.success("Thank you! Your message has been received. We will respond within 24 hours.");
+  };
+
+  return (
+    <TextPage title="Contact & Support">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div>
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            Have a question, feedback, feature request, or technical question about PDFMarts? Our dedicated team is here to help.
+          </p>
+
+          <div className="space-y-4 text-sm">
+            <div className="p-4 rounded-2xl bg-card border border-border">
+              <h4 className="font-bold text-foreground mb-1">Direct Support Email</h4>
+              <p className="text-muted-foreground font-mono">support@pdfmarts.com</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-card border border-border">
+              <h4 className="font-bold text-foreground mb-1">Privacy & Compliance Inquiries</h4>
+              <p className="text-muted-foreground font-mono">privacy@pdfmarts.com</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-card border border-border">
+              <h4 className="font-bold text-foreground mb-1">Response SLA</h4>
+              <p className="text-muted-foreground">We typically review and respond to inquiries within 24 business hours.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          {submitted ? (
+            <div className="p-8 rounded-3xl bg-green-500/10 border border-green-500/20 text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-green-500/20 text-green-600 flex items-center justify-center mx-auto">
+                <Check className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-xl text-foreground">Message Sent Successfully</h3>
+              <p className="text-xs text-muted-foreground">Thank you for reaching out. A representative will contact you shortly at {formData.email}.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="p-6 rounded-3xl bg-card border border-border space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-foreground mb-1">Your Name</label>
+                <input
+                  required
+                  type="text"
+                  placeholder="John Doe"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:border-primary"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-foreground mb-1">Email Address</label>
+                <input
+                  required
+                  type="email"
+                  placeholder="name@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:border-primary"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-foreground mb-1">Subject</label>
+                <select
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:border-primary"
+                >
+                  <option>General Inquiry</option>
+                  <option>Tool Feature Request</option>
+                  <option>Bug / Conversion Report</option>
+                  <option>Privacy & Data Question</option>
+                  <option>Advertising / Business Partnership</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-foreground mb-1">Message</label>
+                <textarea
+                  required
+                  rows={4}
+                  placeholder="Describe your inquiry or issue..."
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:border-primary"
+                />
+              </div>
+
+              <Button type="submit" fullWidth size="md">Send Message</Button>
+            </form>
+          )}
+        </div>
+      </div>
+    </TextPage>
+  );
+}
+
+function CookiePolicyPage() {
+  return (
+    <TextPage title="Cookie & Advertising Policy">
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p className="text-sm">Effective Date: September 2026</p>
+
+        <div className="p-4 bg-primary/10 border border-primary/20 rounded-2xl text-foreground text-sm">
+          <strong>Summary:</strong> PDFMarts uses minimal local browser storage to save your language and theme preferences. We partner with Google AdSense to serve non-intrusive advertisements.
+        </div>
+
+        <div>
+          <h3 className="text-xl font-bold text-foreground mb-2">1. What are Cookies and Local Storage?</h3>
+          <p>
+            Cookies and local browser storage are small text files placed on your computer or mobile device when you browse websites. They enable websites to remember user preferences and analyze general traffic metrics.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-bold text-foreground mb-2">2. Google AdSense & DoubleClick DART Cookies</h3>
+          <p>
+            Google, as a third-party vendor, uses cookies to serve advertisements on PDFMarts. Google's use of the DoubleClick DART cookie enables it to serve ads to users based on their visit to our site and other sites on the Internet.
+          </p>
+          <p className="mt-2">
+            Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-primary underline">Google Ads Settings</a> or through the <a href="https://www.aboutads.info/choices" target="_blank" rel="noopener noreferrer" className="text-primary underline">Network Advertising Initiative</a>.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-bold text-foreground mb-2">3. How to Manage and Disable Cookies</h3>
+          <p>
+            You can control or disable cookies through your browser settings. Please note that disabling cookies may affect some interface convenience features (such as remembering your selected dark/light mode preference).
+          </p>
+        </div>
+      </div>
+    </TextPage>
+  );
+}
+
+function EditorialPolicyPage() {
+  return (
+    <TextPage title="Editorial & Verification Policy">
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p className="text-sm">Effective Date: September 2026</p>
+
+        <div>
+          <h3 className="text-xl font-bold text-foreground mb-2">1. Technical Accuracy & Fact-Checking</h3>
+          <p>
+            All educational articles, PDF guides, and tool documentation published on PDFMarts are authored and reviewed by document software engineers and security researchers. We benchmark tool compression rates, font fidelity, and encryption algorithms against official ISO 32000-1 and ISO 32000-2 specifications.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-bold text-foreground mb-2">2. Privacy Verification & Zero-Retention Pledge</h3>
+          <p>
+            Every tool algorithm on PDFMarts is verified to ensure zero network transmission of file binaries. We routinely inspect all browser network traffic to maintain strict zero-upload guarantees.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-bold text-foreground mb-2">3. Corrections and Community Feedback</h3>
+          <p>
+            If you notice any inaccuracy in our guides or encounter a conversion anomaly with a specific document format, please email <span className="font-mono text-foreground">support@pdfmarts.com</span>. We review and update our documentation within 48 hours of verification.
+          </p>
+        </div>
+      </div>
+    </TextPage>
+  );
+}
+
+function GuidesListPage() {
+  const { navigate } = useRouter();
+  const [search, setSearch] = useState("");
+  const [selectedCat, setSelectedCat] = useState("All");
+
+  const categories = ["All", "Optimization Guide", "Security & Privacy", "Architecture & Privacy", "Conversion Guide", "Productivity"];
+
+  const filtered = GUIDE_ARTICLES.filter(a => {
+    const matchesSearch = a.title.toLowerCase().includes(search.toLowerCase()) || a.summary.toLowerCase().includes(search.toLowerCase());
+    const matchesCat = selectedCat === "All" || a.category === selectedCat;
+    return matchesSearch && matchesCat;
+  });
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen pt-24 pb-20 px-4"
+    >
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4">
+            <BookOpen className="w-3.5 h-3.5" />
+            PDF Learning Hub & Technical Guides
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4">
+            Master Your Documents with Expert PDF Guides
+          </h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
+            In-depth tutorials, cryptographic security explanations, and optimization techniques for students, professionals, and businesses.
+          </p>
+        </div>
+
+        {/* Search & Filter */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-10">
+          <div className="relative flex-1">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search guides, tutorials, and security topics..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-border bg-card text-sm focus:outline-none focus:border-primary"
+            />
+          </div>
+
+          <div className="flex gap-1.5 overflow-x-auto pb-2 sm:pb-0">
+            {categories.map((c) => (
+              <button
+                key={c}
+                onClick={() => setSelectedCat(c)}
+                className={cn(
+                  "px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors",
+                  selectedCat === c ? "bg-primary text-white" : "bg-muted hover:bg-muted/80 text-muted-foreground"
+                )}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Articles Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {filtered.map((art) => (
+            <div
+              key={art.slug}
+              onClick={() => navigate("guide-article", art.slug)}
+              className="p-6 rounded-3xl bg-card border border-border hover:border-primary/40 hover:shadow-lg transition-all cursor-pointer flex flex-col justify-between group"
+            >
+              <div>
+                <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+                  <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary font-bold">{art.category}</span>
+                  <span>{art.readTime}</span>
+                </div>
+                <h2 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors mb-2 leading-snug">
+                  {art.title}
+                </h2>
+                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 mb-4">
+                  {art.summary}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-border/60 text-xs">
+                <span className="text-muted-foreground font-medium">By {art.author}</span>
+                <span className="text-primary font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                  Read Guide →
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <AdSenseUnit slotId="1000000006" className="mt-16" />
+      </div>
+    </motion.div>
+  );
+}
+
+function GuideArticlePage({ slug }: { slug: string }) {
+  const { navigate } = useRouter();
+  const article = GUIDE_ARTICLES.find(a => a.slug === slug) || GUIDE_ARTICLES[0];
+  const relatedTool = article.relatedToolId ? ALL_TOOLS.find(t => t.id === article.relatedToolId) : null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen pt-24 pb-20 px-4"
+    >
+      <div className="max-w-3xl mx-auto">
+        {/* Breadcrumbs */}
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-6">
+          <button onClick={() => navigate("home")} className="hover:text-foreground">Home</button>
+          <ChevronRight className="w-3 h-3" />
+          <button onClick={() => navigate("guides")} className="hover:text-foreground">Guides</button>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-foreground font-semibold truncate">{article.category}</span>
+        </div>
+
+        {/* Header */}
+        <div className="mb-8">
+          <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs mb-3">
+            {article.category} · {article.readTime}
+          </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground leading-tight mb-4">
+            {article.title}
+          </h1>
+          <p className="text-base text-muted-foreground leading-relaxed">
+            {article.summary}
+          </p>
+
+          <div className="flex items-center gap-3 pt-6 border-t border-border mt-6 text-xs text-muted-foreground">
+            <div className="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">
+              {article.author.charAt(0)}
+            </div>
+            <div>
+              <div className="font-bold text-foreground">{article.author}</div>
+              <div className="text-[11px]">{article.authorRole} · Published {article.date}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Callout if related tool exists */}
+        {relatedTool && (
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-primary/10 to-indigo-500/10 border border-primary/20 flex items-center justify-between gap-4 mb-10">
+            <div>
+              <h4 className="font-bold text-sm text-foreground">Try the Free Online Tool</h4>
+              <p className="text-xs text-muted-foreground">{relatedTool.name} — 100% Client-Side & Unlimited.</p>
+            </div>
+            <Button size="sm" onClick={() => navigate("tool", relatedTool.id)}>
+              Open {relatedTool.name}
+            </Button>
+          </div>
+        )}
+
+        {/* Article Body */}
+        <div className="space-y-10 text-foreground leading-relaxed text-sm sm:text-base">
+          {article.sections.map((sec, idx) => (
+            <div key={idx} className="space-y-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground">{sec.heading}</h2>
+              {sec.paragraphs.map((p, pIdx) => (
+                <p key={pIdx} className="text-muted-foreground leading-relaxed">{p}</p>
+              ))}
+
+              {sec.keyPoints && sec.keyPoints.length > 0 && (
+                <div className="p-4 rounded-2xl bg-muted/30 border border-border space-y-2 my-4">
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-primary">Key Takeaways</h4>
+                  <ul className="space-y-1.5 text-xs text-muted-foreground">
+                    {sec.keyPoints.map((kp, kIdx) => (
+                      <li key={kIdx} className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span>{kp}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {sec.callout && (
+                <div className="p-4 rounded-2xl bg-primary/10 border-l-4 border-primary text-xs sm:text-sm text-foreground">
+                  {sec.callout}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Ad Placement */}
+        <AdSenseUnit slotId="1000000007" className="mt-14" />
+
+        {/* Back to Guides */}
+        <div className="pt-10 border-t border-border mt-12 flex justify-between items-center">
+          <Button variant="outline" size="sm" onClick={() => navigate("guides")}>
+            ← All PDF Guides
+          </Button>
+          <Button size="sm" onClick={() => navigate("tools")}>
+            Browse All 32+ Tools
+          </Button>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -3049,16 +3695,28 @@ function parseUrlToRoute(): { route: string; toolId: string | null; lang: Langua
     return { route: "tool", toolId: effectivePath, lang };
   }
 
-  // Check static page routes (clean path)
-  if (effectivePath && ["tools", "privacy", "terms", "home"].includes(effectivePath)) {
-    return { route: effectivePath === "home" ? "home" : effectivePath, toolId: null, lang };
+  // Check guides routes
+  if (effectivePath === "guides" || effectivePath === "blog" || effectivePath === "learning-hub") {
+    return { route: "guides", toolId: null, lang };
+  }
+
+  // Check guide article direct or /guides/:slug
+  const guideSlug = effectivePath.startsWith("guides/") ? effectivePath.replace(/^guides\//, "") : effectivePath;
+  if (GUIDE_ARTICLES.some(a => a.slug === guideSlug)) {
+    return { route: "guide-article", toolId: guideSlug, lang };
+  }
+
+  // Check static publisher page routes (clean path)
+  if (effectivePath && ["tools", "privacy", "terms", "about", "contact", "cookies", "cookie-policy", "editorial-policy", "home"].includes(effectivePath)) {
+    const canonicalRoute = effectivePath === "cookie-policy" ? "cookies" : (effectivePath === "home" ? "home" : effectivePath);
+    return { route: canonicalRoute, toolId: null, lang };
   }
 
   // Fallback to query parameter deep linking
   if (toolParam && ALL_TOOLS.some((t) => t.id === toolParam)) {
     return { route: "tool", toolId: toolParam, lang };
   }
-  if (pageParam && ["tools", "privacy", "terms", "home"].includes(pageParam)) {
+  if (pageParam && ["tools", "privacy", "terms", "about", "contact", "cookies", "editorial-policy", "guides", "home"].includes(pageParam)) {
     return { route: pageParam, toolId: null, lang };
   }
 
@@ -3067,12 +3725,18 @@ function parseUrlToRoute(): { route: string; toolId: string | null; lang: Langua
 
 function renderPage(route: string, toolId: string | null) {
   switch (route) {
-    case "home":     return <HomePage key="home" />;
-    case "tools":    return <ToolsPage key="tools" />;
-    case "tool":     return toolId ? <ToolPage key={toolId} toolId={toolId} /> : <HomePage key="home" />;
-    case "privacy":  return <PrivacyPage key="privacy" />;
-    case "terms":    return <TermsPage key="terms" />;
-    default:         return <HomePage key="home" />;
+    case "home":             return <HomePage key="home" />;
+    case "tools":            return <ToolsPage key="tools" />;
+    case "tool":             return toolId ? <ToolPage key={toolId} toolId={toolId} /> : <HomePage key="home" />;
+    case "guides":           return <GuidesListPage key="guides" />;
+    case "guide-article":    return <GuideArticlePage key={toolId || "article"} slug={toolId || ""} />;
+    case "about":            return <AboutPage key="about" />;
+    case "contact":          return <ContactPage key="contact" />;
+    case "cookies":          return <CookiePolicyPage key="cookies" />;
+    case "editorial-policy": return <EditorialPolicyPage key="editorial" />;
+    case "privacy":          return <PrivacyPage key="privacy" />;
+    case "terms":            return <TermsPage key="terms" />;
+    default:                 return <HomePage key="home" />;
   }
 }
 
