@@ -19,6 +19,22 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 // Serve static frontend build output
 app.use(express.static(path.join(__dirname, "dist")));
 
+// Explicit static handlers for Google AdSense and Search crawlers
+app.get("/ads.txt", (req, res) => {
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.sendFile(path.join(__dirname, "public", "ads.txt"));
+});
+
+app.get("/robots.txt", (req, res) => {
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.sendFile(path.join(__dirname, "public", "robots.txt"));
+});
+
+app.get("/sitemap.xml", (req, res) => {
+  res.setHeader("Content-Type", "application/xml; charset=utf-8");
+  res.sendFile(path.join(__dirname, "public", "sitemap.xml"));
+});
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
