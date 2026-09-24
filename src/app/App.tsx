@@ -246,43 +246,18 @@ function ProgressBar({ value }: { value: number }) {
 // ─── AdSense Monetization Component ───────────────────────────────────────────
 
 function AdSenseUnit({
-  slotId,
-  format = "auto",
-  responsive = true,
-  className,
+  slotId: _slotId,
+  format: _format,
+  responsive: _responsive,
+  className: _className,
 }: {
   slotId?: string;
   format?: string;
   responsive?: boolean;
   className?: string;
 }) {
-  const adRef = useRef<HTMLModElement>(null);
-
-  useEffect(() => {
-    try {
-      if (typeof window !== "undefined") {
-        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-      }
-    } catch {
-      // Pending AdSense review / ad blocking
-    }
-  }, []);
-
-  return (
-    <div className={cn("w-full overflow-hidden my-6 text-center", className)}>
-      <div className="min-h-[90px] w-full flex items-center justify-center">
-        <ins
-          ref={adRef}
-          className="adsbygoogle"
-          style={{ display: "block", minHeight: "90px", width: "100%" }}
-          data-ad-client="ca-pub-2050955694853570"
-          data-ad-slot={slotId || ""}
-          data-ad-format={format}
-          data-full-width-responsive={responsive ? "true" : "false"}
-        />
-      </div>
-    </div>
-  );
+  // Suppress blank ad unit rendering while the domain is under AdSense approval review
+  return null;
 }
 
 // ─── Upload Components ────────────────────────────────────────────────────────
@@ -1116,6 +1091,183 @@ function FeaturesSection() {
   );
 }
 
+function SecurityArchitectureSection() {
+  const { navigate } = useRouter();
+
+  return (
+    <section className="py-20 px-4 bg-muted/20 border-y border-border">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4">
+            <Shield className="w-3.5 h-3.5" /> Client-Side Privacy Standard
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+            Why Choose PDFMarts: Client-Side Security Architecture
+          </h2>
+          <p className="text-muted-foreground mt-3 text-sm sm:text-base leading-relaxed">
+            Understanding how our zero-upload WebAssembly and Canvas execution sandbox protects your confidential records compared to traditional cloud PDF converters.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+          {/* PDFMarts Approach */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-card border-2 border-primary/40 shadow-sm relative flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-border">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+                  <h3 className="font-bold text-lg text-foreground">PDFMarts In-Browser Sandbox</h3>
+                </div>
+                <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-green-500/10 text-green-600">
+                  Recommended
+                </span>
+              </div>
+
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                All document processing happens strictly inside your local web browser using WebAssembly (Wasm) and JavaScript memory.
+              </p>
+
+              <ul className="space-y-3 pt-2 text-xs sm:text-sm">
+                {[
+                  "0 KB uploaded across the network (Verified in DevTools Network tab)",
+                  "Zero cloud virtual machine exposure or remote server caching",
+                  "Immediate and permanent memory purging upon tab close",
+                  "Full compliance with GDPR, HIPAA, and CCPA/CPRA data mandates",
+                  "Instant real-time manipulation with no file size queues or delays"
+                ].map((pt, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-foreground font-medium">{pt}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-6 pt-5 border-t border-border/80 flex items-center justify-between text-xs text-muted-foreground">
+              <span>Security Rating: <strong>A+ Maximum Privacy</strong></span>
+              <button
+                onClick={() => navigate("editorial-policy")}
+                className="text-primary hover:underline font-semibold"
+              >
+                Editorial Standards →
+              </button>
+            </div>
+          </div>
+
+          {/* Legacy Cloud Converters */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-card border border-border flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-border">
+                <h3 className="font-bold text-lg text-muted-foreground">Traditional Cloud Converters</h3>
+                <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-600">
+                  Privacy Risk
+                </span>
+              </div>
+
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Legacy tools require your files to travel over the internet to remote third-party servers for conversion.
+              </p>
+
+              <ul className="space-y-3 pt-2 text-xs sm:text-sm text-muted-foreground">
+                {[
+                  "Uploads confidential bank statements, IDs, and agreements to remote servers",
+                  "Temporary files stored in cloud disks, backup volumes, and error log dumps",
+                  "Vulnerable to server misconfigurations, data breaches, and scraping bots",
+                  "Enforces artificial wait times, queue throttles, and paywalls",
+                  "Requires trusting third-party privacy claims without client verification"
+                ].map((pt, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5">
+                    <X className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-6 pt-5 border-t border-border/80 flex items-center justify-between text-xs text-muted-foreground">
+              <span>Cloud Exposure: <strong>High Third-Party Risk</strong></span>
+              <button
+                onClick={() => navigate("privacy")}
+                className="text-primary hover:underline font-semibold"
+              >
+                Read Privacy Policy →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeaturedGuidesSection() {
+  const { navigate } = useRouter();
+
+  return (
+    <section className="py-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-3">
+              <BookOpen className="w-3.5 h-3.5" /> Document Engineering Hub
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              Featured Guides & Deep-Dive Tutorials
+            </h2>
+            <p className="text-muted-foreground mt-2 text-sm sm:text-base max-w-2xl">
+              Comprehensive walkthroughs, technical benchmarks, and security whitepapers written by document format engineers.
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            onClick={() => navigate("guides")}
+            className="self-start md:self-auto rounded-xl"
+          >
+            Explore All Guides <ArrowRight className="w-4 h-4 ml-1" />
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {GUIDE_ARTICLES.slice(0, 3).map((article) => (
+            <div
+              key={article.slug}
+              onClick={() => navigate("guide-article", article.slug)}
+              className="p-6 rounded-3xl bg-card border border-border hover:border-primary/50 hover:shadow-lg transition-all duration-200 cursor-pointer flex flex-col justify-between group"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-primary px-2.5 py-1 rounded-full bg-primary/10">
+                    {article.category}
+                  </span>
+                  <span className="text-muted-foreground">{article.readTime}</span>
+                </div>
+
+                <h3 className="font-bold text-lg leading-snug group-hover:text-primary transition-colors">
+                  {article.title}
+                </h3>
+
+                <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                  {article.summary}
+                </p>
+              </div>
+
+              <div className="pt-6 border-t border-border mt-6 flex items-center justify-between text-xs">
+                <div>
+                  <p className="font-semibold text-foreground">{article.author}</p>
+                  <p className="text-muted-foreground text-[11px]">{article.authorRole}</p>
+                </div>
+                <span className="font-bold text-primary group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                  Read Guide →
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FAQSection() {
   const { t } = useRouter();
   return (
@@ -1197,6 +1349,8 @@ function HomePage() {
       <AllToolsSection />
       <HowItWorksSection />
       <FeaturesSection />
+      <SecurityArchitectureSection />
+      <FeaturedGuidesSection />
       <BookmarkletSection />
       <div className="max-w-5xl mx-auto px-4">
         <AdSenseUnit slotId="1000000002" />
