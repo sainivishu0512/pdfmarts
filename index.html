@@ -20,6 +20,10 @@
     <meta name="theme-color" content="#4f46e5" />
     <meta name="color-scheme" content="light dark" />
 
+    <!-- Google AdSense Account & Domain Meta Directives -->
+    <meta name="google-adsense-platform-account" content="ca-pub-2050955694853570" />
+    <meta name="google-adsense-platform-domain" content="pdfmarts.com" />
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://pdfmarts.com/" />
 
@@ -60,13 +64,6 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234F46E5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234F46E5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>" />
-
-    <!-- Google Search Console & Webmaster Verification -->
-    <meta name="google-site-verification" content="" />
-    <meta name="msvalidate.01" content="" />
-    <meta name="rating" content="General" />
-    <meta name="revisit-after" content="2 days" />
-    <meta name="distribution" content="global" />
 
     <!-- Performance Preconnects -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
@@ -175,7 +172,7 @@
       }
     </script>
 
-    <!-- Google AdSense Script -->
+    <!-- Google AdSense Script (Owner ca-pub-2050955694853570) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2050955694853570" crossorigin="anonymous"></script>
 
     <style>
@@ -188,11 +185,101 @@
         scroll-behavior: smooth;
       }
       #root {
-        height: 100%;
+        min-height: 100%;
         display: flex;
         flex-direction: column;
       }
-      .seo-crawler-links { display: none; }
+      .pre-render-container {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #1e293b;
+        background-color: #ffffff;
+        line-height: 1.6;
+        padding: 0 16px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .pre-render-header {
+        padding: 24px 0;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .pre-render-logo {
+        font-size: 24px;
+        font-weight: 800;
+        color: #4f46e5;
+        text-decoration: none;
+      }
+      .pre-render-nav a {
+        margin-left: 20px;
+        color: #475569;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .pre-render-hero {
+        padding: 60px 0 40px;
+        text-align: center;
+      }
+      .pre-render-hero h1 {
+        font-size: 44px;
+        font-weight: 900;
+        color: #0f172a;
+        margin-bottom: 16px;
+        line-height: 1.2;
+      }
+      .pre-render-hero p {
+        font-size: 18px;
+        color: #64748b;
+        max-width: 760px;
+        margin: 0 auto 32px;
+      }
+      .pre-render-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        margin: 40px 0;
+      }
+      .pre-render-card {
+        padding: 24px;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        background: #f8fafc;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+      .pre-render-card h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-top: 0;
+        margin-bottom: 8px;
+      }
+      .pre-render-card p {
+        font-size: 13px;
+        color: #64748b;
+        margin: 0;
+      }
+      .pre-render-section {
+        margin: 60px 0;
+        padding: 40px;
+        border-radius: 20px;
+        background: #f1f5f9;
+      }
+      .pre-render-footer {
+        padding: 40px 0;
+        border-top: 1px solid #e2e8f0;
+        text-align: center;
+        font-size: 13px;
+        color: #94a3b8;
+      }
+      .pre-render-footer a {
+        color: #64748b;
+        margin: 0 12px;
+        text-decoration: none;
+      }
       @supports (padding-bottom: env(safe-area-inset-bottom)) {
         body {
           padding-bottom: env(safe-area-inset-bottom);
@@ -202,67 +289,143 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <!-- Root Container with Server Pre-Rendered High-Authority Publisher Content for AdSense & Search Crawlers -->
+    <div id="root">
+      <div class="pre-render-container">
+        <header class="pre-render-header">
+          <a href="/" class="pre-render-logo">PDFMarts</a>
+          <nav class="pre-render-nav">
+            <a href="/tools">All Tools</a>
+            <a href="/guides">Editorial Guides</a>
+            <a href="/about">About Us</a>
+            <a href="/editorial-policy">Editorial Policy</a>
+            <a href="/contact">Contact & Support</a>
+          </nav>
+        </header>
 
-    <!-- Crawler & Search Engine Semantic Fallback for Instant Google Indexing & AdSense Compliance -->
+        <main>
+          <section class="pre-render-hero">
+            <h1>All Your PDF Tools. One Fast, Private Place.</h1>
+            <p>
+              Merge, compress, convert, edit, and sign PDFs directly inside your web browser using WebAssembly.
+              100% free, client-side execution with zero cloud file uploads and maximum data confidentiality.
+            </p>
+          </section>
+
+          <section>
+            <h2 style="font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 8px;">Popular Free Online PDF Tools</h2>
+            <p style="text-align: center; color: #64748b; margin-bottom: 30px;">Engineered for high performance and strict privacy.</p>
+            <div class="pre-render-grid">
+              <a href="/compress-pdf-target" class="pre-render-card">
+                <h3>Compress PDF to Target Size</h3>
+                <p>Compress PDF documents to strict 100KB, 200KB, or 500KB limits for government and visa portals.</p>
+              </a>
+              <a href="/merge-pdf" class="pre-render-card">
+                <h3>Merge PDF Files</h3>
+                <p>Combine multiple PDF documents into a single consolidated file in seconds with custom reordering.</p>
+              </a>
+              <a href="/pdf-to-word" class="pre-render-card">
+                <h3>PDF to Word (DOCX)</h3>
+                <p>Convert PDF documents to fully editable Microsoft Word documents while maintaining formatting.</p>
+              </a>
+              <a href="/word-to-pdf" class="pre-render-card">
+                <h3>Word to PDF</h3>
+                <p>Convert DOCX and DOC documents to high-resolution, standardized PDF files instantly.</p>
+              </a>
+              <a href="/sign-pdf" class="pre-render-card">
+                <h3>Sign PDF Online</h3>
+                <p>Add digital drawn signatures, typed signatures, and verification stamps securely in browser memory.</p>
+              </a>
+              <a href="/grayscale-pdf" class="pre-render-card">
+                <h3>Grayscale (B&W) PDF</h3>
+                <p>Convert colored PDFs to crisp black and white grayscale to reduce ink consumption and meet filing rules.</p>
+              </a>
+              <a href="/split-pdf" class="pre-render-card">
+                <h3>Split PDF</h3>
+                <p>Extract specific pages or divide large multi-page PDF documents into separate files.</p>
+              </a>
+              <a href="/ocr-pdf" class="pre-render-card">
+                <h3>OCR Scanned PDF</h3>
+                <p>Extract text from scanned PDFs, images, and non-selectable documents using client-side OCR.</p>
+              </a>
+            </div>
+          </section>
+
+          <section class="pre-render-section">
+            <h2 style="font-size: 28px; font-weight: 800; margin-top: 0;">Why Choose PDFMarts: Client-Side Security Architecture</h2>
+            <p style="font-size: 15px; color: #334155; line-height: 1.7;">
+              Traditional cloud-based PDF conversion platforms upload your confidential invoices, tax returns, and legal agreements to remote servers, exposing documents to third-party disk storage, data leaks, and server inspection.
+            </p>
+            <p style="font-size: 15px; color: #334155; line-height: 1.7;">
+              PDFMarts utilizes modern WebAssembly (Wasm) and HTML5 Canvas engines to execute all document manipulation 100% inside your local web browser. Your files never leave your computer or phone, guaranteeing zero network uploads, zero data retention liabilities, and full compliance with GDPR, HIPAA, and CCPA principles.
+            </p>
+          </section>
+
+          <section style="margin: 60px 0;">
+            <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 8px;">Featured Technical Guides & Deep Dives</h2>
+            <p style="color: #64748b; margin-bottom: 30px;">In-depth tutorials and engineering whitepapers published by our document format team.</p>
+            <div class="pre-render-grid">
+              <a href="/how-to-compress-pdf-to-100kb-200kb" class="pre-render-card">
+                <span style="font-size: 11px; font-weight: 700; color: #4f46e5; text-transform: uppercase;">Optimization</span>
+                <h3>How to Compress PDF to 100KB or 200KB Without Quality Loss</h3>
+                <p>A technical guide on DPI downsampling, font subsetting, and discrete cosine transform quantization.</p>
+              </a>
+              <a href="/complete-guide-to-pdf-security-encryption-signatures" class="pre-render-card">
+                <span style="font-size: 11px; font-weight: 700; color: #4f46e5; text-transform: uppercase;">Security</span>
+                <h3>The Complete Guide to PDF Security, Passwords & Signatures</h3>
+                <p>Cryptographic principles behind AES-256 encryption, permissions control, and verifiable client-side signing.</p>
+              </a>
+              <a href="/client-side-vs-cloud-pdf-privacy" class="pre-render-card">
+                <span style="font-size: 11px; font-weight: 700; color: #4f46e5; text-transform: uppercase;">Privacy</span>
+                <h3>Client-Side vs Cloud PDF Processing: Why In-Browser Privacy Matters</h3>
+                <p>An investigation into server-side upload liabilities and how WebAssembly creates a zero-leak sandbox.</p>
+              </a>
+            </div>
+          </section>
+
+          <section style="margin: 60px 0; border-top: 1px solid #e2e8f0; padding-top: 40px;">
+            <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 20px;">Frequently Asked Questions</h2>
+            <div style="display: grid; gap: 16px;">
+              <div>
+                <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 4px;">Are my documents uploaded to a remote server?</h4>
+                <p style="font-size: 14px; color: #64748b; margin: 0;">No. All processing occurs locally within your web browser's V8 or SpiderMonkey engine. 0 KB of file content is uploaded across the network.</p>
+              </div>
+              <div>
+                <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 4px;">Is PDFMarts free to use?</h4>
+                <p style="font-size: 14px; color: #64748b; margin: 0;">Yes, PDFMarts is 100% free with unlimited tasks, no file size caps, and no registration required.</p>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer class="pre-render-footer">
+          <p>© 2026 PDFMarts. 100% Private Client-Side PDF Tools.</p>
+          <p>
+            <a href="/about">About Us</a> |
+            <a href="/editorial-policy">Editorial Policy</a> |
+            <a href="/privacy">Privacy Policy</a> |
+            <a href="/terms">Terms of Service</a> |
+            <a href="/cookies">Cookie Policy</a> |
+            <a href="/contact">Contact & Support</a>
+          </p>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Fallback NoScript for Crawlers with Disabled JavaScript -->
     <noscript>
-      <header>
-        <h1>PDFMarts — Free Online PDF Tools, Converter & Editor</h1>
-        <p>100% Private, Client-Side PDF Suite with Zero File Uploads, No Registration & No Size Limits.</p>
-      </header>
-      <main>
-        <section>
-          <h2>About PDFMarts & Client-Side Privacy</h2>
-          <p>PDFMarts is an in-browser document processing suite designed with a zero-upload architecture. Unlike traditional cloud converters that upload confidential files to external servers, all document compression, conversion, merging, and signing occur locally inside your browser memory using WebAssembly and HTML5 Canvas APIs.</p>
-        </section>
-
-        <section>
-          <h2>Popular Free Online PDF Tools</h2>
-          <ul>
-            <li><a href="/compress-pdf-target">Compress PDF to Target Size (100KB, 200KB, 500KB)</a></li>
-            <li><a href="/compress-pdf">Compress PDF File Size</a></li>
-            <li><a href="/merge-pdf">Merge Multiple PDF Files Online</a></li>
-            <li><a href="/split-pdf">Split PDF Pages</a></li>
-            <li><a href="/pdf-to-word">Convert PDF to Editable Word (DOCX)</a></li>
-            <li><a href="/word-to-pdf">Convert Word Documents to PDF</a></li>
-            <li><a href="/sign-pdf">Sign PDF Online with Digital Verified Signatures</a></li>
-            <li><a href="/ocr-pdf">OCR PDF - Extract Text from Scanned Documents</a></li>
-            <li><a href="/edit-pdf">Edit PDF Online - Annotate & Stamp</a></li>
-            <li><a href="/pdf-to-excel">Convert PDF to Excel Spreadsheet</a></li>
-            <li><a href="/excel-to-pdf">Convert Excel to PDF</a></li>
-            <li><a href="/jpg-to-pdf">Convert JPG & PNG Images to PDF</a></li>
-            <li><a href="/pdf-to-jpg">Extract High-Resolution JPG Images from PDF</a></li>
-            <li><a href="/watermark-pdf">Add Custom Watermark to PDF</a></li>
-            <li><a href="/protect-pdf">Encrypt and Password Protect PDF</a></li>
-            <li><a href="/unlock-pdf">Unlock Password-Protected PDF</a></li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Featured PDF Learning Guides & Tutorials</h2>
-          <article>
-            <h3><a href="/how-to-compress-pdf-to-100kb-200kb">How to Compress PDF to 100KB, 200KB or 500KB Without Losing Quality</a></h3>
-            <p>Learn the exact techniques to reduce PDF file size for government portals, email attachments, and job applications while preserving sharp text and images.</p>
-          </article>
-          <article>
-            <h3><a href="/complete-guide-to-pdf-security-encryption-signatures">The Complete Guide to PDF Security, Passwords & Digital Signatures</a></h3>
-            <p>Discover the cryptographic principles behind PDF AES encryption, owner vs user password protection, and verifiable client-side digital signatures.</p>
-          </article>
-          <article>
-            <h3><a href="/client-side-vs-cloud-pdf-privacy">Client-Side vs Cloud PDF Processing: Why In-Browser Privacy Matters</a></h3>
-            <p>Understand how client-side WebAssembly tools protect sensitive banking, medical, and legal documents compared to traditional cloud conversion services.</p>
-          </article>
-          <article>
-            <h3><a href="/convert-scanned-pdf-to-word-ocr">How to Convert Scanned PDF to Editable Word Documents with OCR</a></h3>
-            <p>Step-by-step tutorial on converting image-only scans and photo PDFs into fully searchable, editable Microsoft Word (.docx) documents.</p>
-          </article>
-        </section>
-
-        <section>
-          <h2>Company & Legal Disclosures</h2>
-          <p><a href="/about">About Us</a> | <a href="/contact">Contact & Support</a> | <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a> | <a href="/cookies">Cookie Policy</a> | <a href="/editorial-policy">Editorial Policy</a></p>
-        </section>
-      </main>
+      <div style="padding: 40px; font-family: sans-serif;">
+        <h1>PDFMarts — Free Online PDF Tools & Converter</h1>
+        <p>100% Client-Side In-Browser PDF Suite with zero server uploads.</p>
+        <ul>
+          <li><a href="/compress-pdf-target">Compress PDF to Target Size (100KB/200KB/500KB)</a></li>
+          <li><a href="/merge-pdf">Merge PDF Files</a></li>
+          <li><a href="/pdf-to-word">Convert PDF to Word</a></li>
+          <li><a href="/guides">PDF Engineering Learning Guides</a></li>
+          <li><a href="/about">About PDFMarts</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+        </ul>
+      </div>
     </noscript>
 
     <script type="module" src="/src/main.tsx"></script>

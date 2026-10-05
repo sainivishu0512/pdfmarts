@@ -280,7 +280,7 @@ function UploadZone({
   return (
     <div
       className={cn(
-        "relative flex flex-col items-center justify-center gap-3 sm:gap-4 rounded-3xl border-2 border-dashed cursor-pointer select-none transition-all duration-200 active:scale-[0.99]",
+        "google-anno-skip relative flex flex-col items-center justify-center gap-3 sm:gap-4 rounded-3xl border-2 border-dashed cursor-pointer select-none transition-all duration-200 active:scale-[0.99]",
         compact ? "p-6 sm:p-8" : "p-6 sm:p-12 md:p-16",
         dragging
           ? "border-primary bg-accent/40 scale-[1.01]"
@@ -2896,7 +2896,7 @@ async function processFilesForTool(
         </div>
 
         {/* Workspace */}
-        <div className="space-y-4">
+        <div className="space-y-4 google-anno-skip">
           {state === "idle" && (
             <UploadZone onFiles={handleFiles} accepts={tool.accepts} multiple={tool.multiple} compact />
           )}
