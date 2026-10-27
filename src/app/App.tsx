@@ -3060,15 +3060,19 @@ async function processFilesForTool(
                     Follow these 3 simple steps to process your files securely in your browser.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {seoInfo.howToSteps.map((step, idx) => (
-                      <div key={idx} className="p-5 rounded-2xl bg-card border border-border">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm flex items-center justify-center mb-3">
-                          {idx + 1}
+                    {seoInfo.howToSteps.map((step: any, idx: number) => {
+                      const title = step.title || step.name || `Step ${idx + 1}`;
+                      const desc = step.desc || step.text || "";
+                      return (
+                        <div key={idx} className="p-5 rounded-2xl bg-card border border-border shadow-sm flex flex-col justify-start">
+                          <div className="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm flex items-center justify-center mb-3 flex-shrink-0">
+                            {idx + 1}
+                          </div>
+                          <h3 className="font-bold text-base mb-1.5 text-foreground">{title}</h3>
+                          <p className="text-muted-foreground text-xs leading-relaxed">{desc}</p>
                         </div>
-                        <h3 className="font-bold text-base mb-1.5">{step.title}</h3>
-                        <p className="text-muted-foreground text-xs leading-relaxed">{step.desc}</p>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -3081,12 +3085,20 @@ async function processFilesForTool(
                     Engineered for high performance, accuracy, and total document privacy.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {seoInfo.features.map((feat, idx) => (
-                      <div key={idx} className="p-5 rounded-2xl bg-muted/20 border border-border">
-                        <h3 className="font-bold text-base mb-1.5 text-foreground">{feat.title}</h3>
-                        <p className="text-muted-foreground text-xs leading-relaxed">{feat.desc}</p>
-                      </div>
-                    ))}
+                    {seoInfo.features.map((feat: any, idx: number) => {
+                      const isObj = typeof feat === "object" && feat !== null;
+                      const title = isObj ? (feat.title || feat.name || `Feature ${idx + 1}`) : feat;
+                      const desc = isObj ? (feat.desc || feat.text) : null;
+                      return (
+                        <div key={idx} className="p-5 rounded-2xl bg-card border border-border shadow-sm flex flex-col justify-start">
+                          <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-xs mb-3 flex-shrink-0">
+                            ✓
+                          </div>
+                          <h3 className="font-bold text-sm sm:text-base mb-1.5 text-foreground leading-snug">{title}</h3>
+                          {desc && <p className="text-muted-foreground text-xs leading-relaxed mt-1">{desc}</p>}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
